@@ -3,7 +3,24 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp") version "2.0.21-1.0.27"
-    id("androidx.room") version "2.6.0"
+    id("androidx.room") version "2.6.1"
+    id("com.google.protobuf") version "0.9.4"
+}
+
+protobuf {
+    protobuf.protoc {
+        artifact = "com.google.protobuf:protoc:21.7"
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
 
 room {
@@ -69,10 +86,8 @@ dependencies {
     implementation(libs.androidx.navigation.dynamic.features.fragment)
     androidTestImplementation(libs.androidx.navigation.testing)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.datastore.preferences.rxjava2)
-    implementation(libs.androidx.datastore.preferences.rxjava3)
     implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.ui.text.google.fonts)
