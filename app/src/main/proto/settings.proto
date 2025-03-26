@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "com.codelab.android.datastore";
+option java_multiple_files = true;
+
+message Settings {
+  double weight = 1;
+  double heightFeet = 2;
+  double heightInches = 3;
+  uint32 age = 4;
+  string gender = 5;
+  string activityLevel = 6;
+  string goal = 7;
+  double manualCalories = 8;
+  double insulinToCarbRatio = 9;
+  double correctionDose = 10;
+  double targetGlucose = 11;
+  bool carbOnly = 12;
+}

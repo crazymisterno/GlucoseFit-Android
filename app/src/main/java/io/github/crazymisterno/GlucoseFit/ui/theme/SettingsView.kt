@@ -15,15 +15,22 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Switch
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -36,19 +43,21 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import com.codelab.android.datastore.Settings
+import com.google.protobuf.value
 import io.github.crazymisterno.GlucoseFit.R
-import io.github.crazymisterno.GlucoseFit.data.Settings
+import io.github.crazymisterno.GlucoseFit.data.SettingsProvider
+import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
+
 @Composable
-fun SettingsView(context: Context) {
-    val scope = rememberCoroutineScope()
-    var config by rememberSaveable { mutableStateOf(Settings(context).data) }
-    val font = Font(
-        R.font.inter_variablefont_opsz_wght,
-        weight = FontWeight.Normal,
-        style = FontStyle.Normal
-    )
+fun SettingsView(viewModel: SettingsViewModel) {
+    val settings = viewModel.settings.collectAsState()
+    val font = Font(R.font.inter_variablefont_opsz_wght)
     val interFamily = FontFamily(font)
     val brush = Brush.horizontalGradient(
         listOf<Color>(
@@ -56,7 +65,9 @@ fun SettingsView(context: Context) {
             Color(0.6f, 0.89f, 0.75f)
         )
     )
-
+    var genderDropDown by remember { mutableStateOf(false) }
+    var activityDropDown by remember { mutableStateOf(false) }
+    var goalDropDown by remember { mutableStateOf(false) }
     Column(
         Modifier
             .background(brush)
@@ -64,14 +75,14 @@ fun SettingsView(context: Context) {
             .verticalScroll(ScrollState(0), enabled = true)
             .padding(top = Dp(10f))
             .padding(horizontal = 15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(shape = RoundedCornerShape(10.dp))
                 .background(Color(1f, 1f, 1f, 0.7f))
-                .padding(Dp(15f))
+                .padding(Dp(15f)),
         ) {
             Text(
                 text = "Settings",
@@ -96,13 +107,9 @@ fun SettingsView(context: Context) {
                         .padding(vertical = 10.dp)
                 )
                 Switch(
-                    checked = config.collectAsState(Settings(context)).value.carbOnly,
+                    checked = settings.value.carbOnly,
                     onCheckedChange = { newVal ->
-                        scope.launch {
-                            config.collect { collector ->
-                                collector.carbOnly = true
-                            }
-                        }
+                        viewModel.updateSettings(carbOnly = newVal)
                     },
                 )
             }
@@ -113,16 +120,96 @@ fun SettingsView(context: Context) {
                     fontSize = TextUnit(17f, TextUnitType.Sp),
                 )
                 TextField(
-                    value = TextFieldValue(config.collectAsState(Settings(context)).value.weight.toString()),
-                    onValueChange = { newVal: TextFieldValue ->
-                        scope.launch {
-                            config.collect { collector ->
-                                collector.weight = newVal.text.toDouble()
-                            }
-                        }
+                    value = TextFieldValue(settings.value.weight.toString()),
+                    onValueChange = {newVal ->
+                        viewModel.updateSettings(weight = newVal.text.toDouble())
                     },
                     label = @Composable { Text("Enter Weight (lbs)") }
                 )
+            }
+
+            Spacer(Modifier.padding(vertical = 5.dp))
+
+            Column {
+                Text(
+                    "Height",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(17f, TextUnitType.Sp)
+                )
+                Row {
+                    TextField(
+                        value = TextFieldValue(settings.value.heightFeet.toString()),
+                        onValueChange = {newVal ->
+                            viewModel.updateSettings(heightFeet = newVal.text.toDouble())
+                        },
+                        label = @Composable { Text("Feet") },
+                        modifier = Modifier
+                            .width(60.dp)
+                    )
+                    Text(
+                        "ft",
+                        modifier = Modifier
+                            .offset(y = 27.dp)
+                            .padding(horizontal = 4.dp),
+                        fontSize = TextUnit(20f, TextUnitType.Sp)
+                    )
+                    TextField(
+                        value = TextFieldValue(settings.value.heightInches.toString()),
+                        onValueChange = {newVal ->
+                            viewModel.updateSettings(heightInches = newVal.text.toDouble())
+                        },
+                        label = @Composable { Text("Inches") },
+                        modifier = Modifier
+                            .width(70.dp)
+                    )
+                    Text(
+                        "in",
+                        modifier = Modifier
+                            .offset(y = 27.dp)
+                            .padding(horizontal = 4.dp),
+                        fontSize = TextUnit(20f, TextUnitType.Sp)
+                    )
+                }
+            }
+
+            Spacer(Modifier.padding(vertical = 5.dp))
+
+            Column {
+                Text(
+                    "Age",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(17f, TextUnitType.Sp)
+                )
+                TextField(
+                    value = TextFieldValue(settings.value.age.toString()),
+                    onValueChange = {newVal ->
+                        viewModel.updateSettings(age = newVal.text.toInt())
+                    },
+                    label = @Composable { Text("Enter Age") }
+                )
+            }
+            Spacer(Modifier.padding(4.dp))
+            Column {
+                Text(
+                    "Gender",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(17f, TextUnitType.Sp)
+                )
+                DropdownMenu(
+                    expanded = genderDropDown,
+                    onDismissRequest = { genderDropDown = false }
+                ) {
+                    SettingsViewModel.genderOptions.forEach { option ->
+                        DropdownMenuItem(
+                            text = @Composable { Text(option) },
+                            onClick = {
+                                viewModel.updateSettings(gender = option)
+                                genderDropDown = false
+                            }
+                        )
+
+                    }
+                }
             }
         }
     }
@@ -131,6 +218,42 @@ fun SettingsView(context: Context) {
 @Preview
 @Composable
 fun Preview() {
-    val localContext = LocalContext.current
-    SettingsView(localContext)
+    val model = SettingsViewModel(PreviewSettings())
+    SettingsView(model)
+}
+
+class PreviewSettings : SettingsProvider {
+    override val shared: Flow<Settings> = flowOf(
+        Settings.newBuilder()
+            .setWeight(165.0)
+            .setHeightFeet(5.0)
+            .setHeightInches(8.0)
+            .setAge(23)
+            .setGender("Male")
+            .setActivityLevel("Sedentary")
+            .setGoal("Maintain Weight")
+            .setManualCalories(2000.0)
+            .setInsulinToCarbRatio(4.0)
+            .setCorrectionDose(3.0)
+            .setTargetGlucose(100.0)
+            .setCarbOnly(false)
+            .build()
+    )
+
+    override suspend fun updateSettings(
+        weight: Double?,
+        heightFeet: Double?,
+        heightInches: Double?,
+        age: Int?,
+        gender: String?,
+        activityLevel: String?,
+        goal: String?,
+        manualCalories: Double?,
+        insulinToCarbRatio: Double?,
+        correctionDose: Double?,
+        targetGlucose: Double?,
+        carbOnly: Boolean?
+    ) {
+        return
+    }
 }

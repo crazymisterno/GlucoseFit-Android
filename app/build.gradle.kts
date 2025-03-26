@@ -1,3 +1,5 @@
+import com.google.protobuf.gradle.id
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,14 +10,23 @@ plugins {
 }
 
 protobuf {
-    protobuf.protoc {
-        artifact = "com.google.protobuf:protoc:21.7"
+    protoc {
+        artifact = "com.google.protobuf:protoc:4.30.1"
     }
-
+    plugins {
+        id("javalite") {
+            artifact = "com.google.protobuf:protoc-gen-javalite:4.30.1"
+        }
+    }
     generateProtoTasks {
         all().forEach { task ->
             task.builtins {
-                create("kotlin") {
+                create("java")
+            }
+
+            task.plugins {
+                id("grpc") {
+                    // Options added to --grpc_out
                     option("lite")
                 }
             }
@@ -95,4 +106,13 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.runtime.rxjava2)
     implementation(libs.androidx.runtime.rxjava3)
+    implementation(libs.grpc.kotlin.stub)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.grpc.stub)
+    implementation(libs.grpc.protobuf)
+    implementation(libs.grpc.okhttp)
+    implementation(libs.androidx.datastore.rxjava2)
+    implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.androidx.datastore.rxjava3)
+    implementation(libs.protobuf.java.util)
 }
