@@ -15,18 +15,30 @@ protobuf {
     }
     plugins {
         id("javalite") {
-            artifact = "com.google.protobuf:protoc-gen-javalite:4.30.1"
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+        id("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.47.0"
+        }
+        id("grpckt") {
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.3.0:jdk8@jar"
         }
     }
     generateProtoTasks {
         all().forEach { task ->
-            task.builtins {
-                create("java")
-            }
-
             task.plugins {
+                id("java") {
+                    option("lite")
+                }
                 id("grpc") {
-                    // Options added to --grpc_out
+                    option("lite")
+                }
+                id("grpckt") {
+                    option("lite")
+                }
+            }
+            task.builtins {
+                id("kotlin") {
                     option("lite")
                 }
             }
@@ -98,7 +110,6 @@ dependencies {
     androidTestImplementation(libs.androidx.navigation.testing)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.datastore)
-    implementation(libs.protobuf.javalite)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.ui.text.google.fonts)
@@ -114,5 +125,10 @@ dependencies {
     implementation(libs.androidx.datastore.rxjava2)
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.androidx.datastore.rxjava3)
-    implementation(libs.protobuf.java.util)
+}
+
+configurations {
+    all {
+        exclude(group = "com.google.protobuf", module = "protobuf-java")
+    }
 }
