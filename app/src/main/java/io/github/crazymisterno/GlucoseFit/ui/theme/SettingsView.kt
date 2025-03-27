@@ -1,6 +1,5 @@
 package io.github.crazymisterno.GlucoseFit.ui.theme
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -19,8 +18,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -31,28 +30,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.text.isDigitsOnly
 import com.codelab.android.datastore.Settings
-import com.google.protobuf.value
 import io.github.crazymisterno.GlucoseFit.R
 import io.github.crazymisterno.GlucoseFit.data.SettingsProvider
 import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-
 
 @Composable
 fun SettingsView(viewModel: SettingsViewModel) {
@@ -120,11 +113,13 @@ fun SettingsView(viewModel: SettingsViewModel) {
                     fontSize = TextUnit(17f, TextUnitType.Sp),
                 )
                 TextField(
-                    value = TextFieldValue(settings.value.weight.toString()),
+                    value = TextFieldValue(
+                        settings.value.weight.toString(),
+                    ),
                     onValueChange = {newVal ->
                         viewModel.updateSettings(weight = newVal.text.toDouble())
                     },
-                    label = @Composable { Text("Enter Weight (lbs)") }
+                    label = { Text("Enter Weight (lbs)") },
                 )
             }
 
@@ -140,7 +135,8 @@ fun SettingsView(viewModel: SettingsViewModel) {
                     TextField(
                         value = TextFieldValue(settings.value.heightFeet.toString()),
                         onValueChange = {newVal ->
-                            viewModel.updateSettings(heightFeet = newVal.text.toDouble())
+                            if (newVal.text.isDigitsOnly())
+                                viewModel.updateSettings(heightFeet = newVal.text.toDouble())
                         },
                         label = @Composable { Text("Feet") },
                         modifier = Modifier
@@ -154,13 +150,16 @@ fun SettingsView(viewModel: SettingsViewModel) {
                         fontSize = TextUnit(20f, TextUnitType.Sp)
                     )
                     TextField(
-                        value = TextFieldValue(settings.value.heightInches.toString()),
+                        value = TextFieldValue(
+                            settings.value.heightInches.toString(),
+                        ),
                         onValueChange = {newVal ->
-                            viewModel.updateSettings(heightInches = newVal.text.toDouble())
+                            if (newVal.text.isDigitsOnly())
+                                viewModel.updateSettings(heightInches = newVal.text.toDouble())
                         },
                         label = @Composable { Text("Inches") },
                         modifier = Modifier
-                            .width(70.dp)
+                            .width(70.dp),
                     )
                     Text(
                         "in",
@@ -181,11 +180,14 @@ fun SettingsView(viewModel: SettingsViewModel) {
                     fontSize = TextUnit(17f, TextUnitType.Sp)
                 )
                 TextField(
-                    value = TextFieldValue(settings.value.age.toString()),
+                    value = TextFieldValue(
+                        settings.value.age.toString(),
+                    ),
                     onValueChange = {newVal ->
                         viewModel.updateSettings(age = newVal.text.toInt())
                     },
-                    label = @Composable { Text("Enter Age") }
+                    label = @Composable { Text("Enter Age") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
             Spacer(Modifier.padding(4.dp))
