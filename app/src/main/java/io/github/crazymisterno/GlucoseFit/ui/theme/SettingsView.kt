@@ -344,7 +344,7 @@ fun SettingsView(viewModel: SettingsViewModel) {
                     TextField(
                         value = settings.value.insulinToCarbRatio,
                         onValueChange = {newVal ->
-                            viewModel.updateSettings(newVal)
+                            viewModel.updateSettings(insulinToCarbRatio = newVal)
                         },
                         label = { Text("Ratio") }
                     )
@@ -370,7 +370,8 @@ fun SettingsView(viewModel: SettingsViewModel) {
                         value = settings.value.correctionDose,
                         onValueChange = {newVal ->
                             viewModel.updateSettings(correctionDose = newVal)
-                        }
+                        },
+                        label = { Text("Correction Dose") }
                     )
                 }
             }
