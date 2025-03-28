@@ -22,22 +22,22 @@ class SettingsViewModel (
         preferences
     }.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.Eagerly,
         SettingsSerializer.defaultValue
     )
 
     fun updateSettings(
-        weight: Double? = null,
-        heightFeet: Double? = null,
-        heightInches: Double? = null,
-        age: Int? = null,
+        weight: String? = null,
+        heightFeet: String? = null,
+        heightInches: String? = null,
+        age: String? = null,
         gender: String? = null,
         activityLevel: String? = null,
         goal: String? = null,
-        manualCalories: Double? = null,
-        insulinToCarbRatio: Double? = null,
-        correctionDose: Double? = null,
-        targetGlucose: Double? = null,
+        manualCalories: String? = null,
+        insulinToCarbRatio: String? = null,
+        correctionDose: String? = null,
+        targetGlucose: String? = null,
         carbOnly: Boolean? = null
     ) {
         viewModelScope.launch {

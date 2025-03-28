@@ -42,17 +42,17 @@ class SettingsDataProvider(
     }
 
     override suspend fun updateSettings(
-        weight: Double?,
-        heightFeet: Double?,
-        heightInches: Double?,
-        age: Int?,
+        weight: String?,
+        heightFeet: String?,
+        heightInches: String?,
+        age: String?,
         gender: String?,
         activityLevel: String?,
         goal: String?,
-        manualCalories: Double?,
-        insulinToCarbRatio: Double?,
-        correctionDose: Double?,
-        targetGlucose: Double?,
+        manualCalories: String?,
+        insulinToCarbRatio: String?,
+        correctionDose: String?,
+        targetGlucose: String?,
         carbOnly: Boolean?
     ) {
         dataStore.updateData { preferences ->
@@ -90,17 +90,17 @@ interface SettingsProvider {
     val shared: Flow<Settings>
 
     suspend fun updateSettings(
-        weight: Double? = null,
-        heightFeet: Double? = null,
-        heightInches: Double? = null,
-        age: Int? = null,
+        weight: String? = null,
+        heightFeet: String? = null,
+        heightInches: String? = null,
+        age: String? = null,
         gender: String? = null,
         activityLevel: String? = null,
         goal: String? = null,
-        manualCalories: Double? = null,
-        insulinToCarbRatio: Double? = null,
-        correctionDose: Double? = null,
-        targetGlucose: Double? = null,
+        manualCalories: String? = null,
+        insulinToCarbRatio: String? = null,
+        correctionDose: String? = null,
+        targetGlucose: String? = null,
         carbOnly: Boolean? = null
     )
 }

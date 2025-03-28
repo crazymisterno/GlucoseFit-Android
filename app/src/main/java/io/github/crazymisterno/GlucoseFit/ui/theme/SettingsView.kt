@@ -21,8 +21,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.collectAsState
@@ -47,6 +53,7 @@ import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsView(viewModel: SettingsViewModel) {
     val settings = viewModel.settings.collectAsState()
@@ -113,13 +120,11 @@ fun SettingsView(viewModel: SettingsViewModel) {
                     fontSize = TextUnit(17f, TextUnitType.Sp),
                 )
                 TextField(
-                    value = TextFieldValue(
-                        settings.value.weight.toString(),
-                    ),
+                    value = settings.value.weight,
                     onValueChange = {newVal ->
-                        viewModel.updateSettings(weight = newVal.text.toDouble())
+                        viewModel.updateSettings(weight = newVal)
                     },
-                    label = { Text("Enter Weight (lbs)") },
+                    label = { Text("Enter Weight (lbs)") }
                 )
             }
 
@@ -133,10 +138,9 @@ fun SettingsView(viewModel: SettingsViewModel) {
                 )
                 Row {
                     TextField(
-                        value = TextFieldValue(settings.value.heightFeet.toString()),
+                        value = settings.value.heightFeet,
                         onValueChange = {newVal ->
-                            if (newVal.text.isDigitsOnly())
-                                viewModel.updateSettings(heightFeet = newVal.text.toDouble())
+                            viewModel.updateSettings(heightFeet = newVal)
                         },
                         label = @Composable { Text("Feet") },
                         modifier = Modifier
@@ -150,12 +154,9 @@ fun SettingsView(viewModel: SettingsViewModel) {
                         fontSize = TextUnit(20f, TextUnitType.Sp)
                     )
                     TextField(
-                        value = TextFieldValue(
-                            settings.value.heightInches.toString(),
-                        ),
+                        value = settings.value.heightInches,
                         onValueChange = {newVal ->
-                            if (newVal.text.isDigitsOnly())
-                                viewModel.updateSettings(heightInches = newVal.text.toDouble())
+                            viewModel.updateSettings(heightInches = newVal)
                         },
                         label = @Composable { Text("Inches") },
                         modifier = Modifier
@@ -180,11 +181,9 @@ fun SettingsView(viewModel: SettingsViewModel) {
                     fontSize = TextUnit(17f, TextUnitType.Sp)
                 )
                 TextField(
-                    value = TextFieldValue(
-                        settings.value.age.toString(),
-                    ),
+                    value = settings.value.age,
                     onValueChange = {newVal ->
-                        viewModel.updateSettings(age = newVal.text.toInt())
+                        viewModel.updateSettings(age = newVal)
                     },
                     label = @Composable { Text("Enter Age") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -197,25 +196,188 @@ fun SettingsView(viewModel: SettingsViewModel) {
                     fontWeight = FontWeight.SemiBold,
                     fontSize = TextUnit(17f, TextUnitType.Sp)
                 )
-                DropdownMenu(
+                ExposedDropdownMenuBox(
                     expanded = genderDropDown,
-                    onDismissRequest = { genderDropDown = false }
-                ) {
-                    SettingsViewModel.genderOptions.forEach { option ->
-                        DropdownMenuItem(
-                            text = @Composable { Text(option) },
-                            onClick = {
-                                viewModel.updateSettings(gender = option)
-                                genderDropDown = false
-                            }
-                        )
-
+                    onExpandedChange = {expanded ->
+                        genderDropDown = expanded
                     }
+                ) {
+                    OutlinedTextField(
+                        value = settings.value.gender,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Gender") },
+                        trailingIcon = {
+                            Icon(
+                                Icons.Filled.ArrowDropDown,
+                                contentDescription = "Dropdown",
+                            )
+                        },
+                        modifier = Modifier
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = genderDropDown,
+                        onDismissRequest = {
+                            genderDropDown = false
+                        }
+                    ) {
+                        SettingsViewModel.genderOptions.forEach { opt ->
+                            DropdownMenuItem(
+                                text = { Text(opt) },
+                                onClick = {
+                                    viewModel.updateSettings(gender = opt)
+                                    genderDropDown = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.padding(vertical = 4.dp))
+            Column {
+                Text(
+                    "Activity Level",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(17f, TextUnitType.Sp)
+                )
+                ExposedDropdownMenuBox(
+                    expanded = activityDropDown,
+                    onExpandedChange = {expanded ->
+                        activityDropDown = expanded
+                    }
+                ) {
+                    OutlinedTextField(
+                        value = settings.value.activityLevel,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Activity Level") },
+                        trailingIcon = {
+                            Icon(
+                                Icons.Filled.ArrowDropDown,
+                                contentDescription = "Dropdown"
+                            )
+                        },
+                        modifier = Modifier
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = activityDropDown,
+                        onDismissRequest = {
+                            activityDropDown = false
+                        }
+                    ) {
+                        SettingsViewModel.activityOptions.forEach { opt ->
+                            DropdownMenuItem(
+                                text = { Text(opt) },
+                                onClick = {
+                                    viewModel.updateSettings(activityLevel = opt)
+                                    activityDropDown = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.padding(4.dp))
+            Column {
+                Text(
+                    "Goal",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(17f, TextUnitType.Sp)
+                )
+                ExposedDropdownMenuBox(
+                    expanded = goalDropDown,
+                    onExpandedChange = { expanded ->
+                        goalDropDown = true
+                    }
+                ) {
+                    OutlinedTextField(
+                        value = settings.value.goal,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Goal") },
+                        trailingIcon = {
+                            Icon(
+                                Icons.Filled.ArrowDropDown,
+                                contentDescription = "DropDown"
+                            )
+                        },
+                        modifier = Modifier
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = goalDropDown,
+                        onDismissRequest = {
+                            goalDropDown = false
+                        }
+                    ) {
+                        SettingsViewModel.goalOptions.forEach { opt ->
+                            DropdownMenuItem(
+                                text = { Text(opt) },
+                                onClick = {
+                                    viewModel.updateSettings(goal = opt)
+                                    goalDropDown = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.padding(4.dp))
+            Column {
+                Text(
+                    "Insulin to carb ratio",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(17f, TextUnitType.Sp)
+                )
+                Row {
+                    Text(
+                        "1:",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = TextUnit(17f, TextUnitType.Sp),
+                        modifier = Modifier.offset(y = 27.dp)
+                    )
+                    Spacer(Modifier.padding(2.dp))
+                    TextField(
+                        value = settings.value.insulinToCarbRatio,
+                        onValueChange = {newVal ->
+                            viewModel.updateSettings(newVal)
+                        },
+                        label = { Text("Ratio") }
+                    )
+                }
+            }
+            Spacer(Modifier.padding(4.dp))
+            Column {
+                Text(
+                    "Correction Dose",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(17f, TextUnitType.Sp)
+                )
+                Row {
+                    Text(
+                        "1:",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = TextUnit(17f, TextUnitType.Sp),
+                        modifier = Modifier
+                            .offset(y = 27.dp)
+                    )
+                    Spacer(Modifier.padding(2.dp))
+                    TextField(
+                        value = settings.value.correctionDose,
+                        onValueChange = {newVal ->
+                            viewModel.updateSettings(correctionDose = newVal)
+                        }
+                    )
                 }
             }
         }
     }
 }
+
 
 @Preview
 @Composable
@@ -227,33 +389,33 @@ fun Preview() {
 class PreviewSettings : SettingsProvider {
     override val shared: Flow<Settings> = flowOf(
         Settings.newBuilder()
-            .setWeight(165.0)
-            .setHeightFeet(5.0)
-            .setHeightInches(8.0)
-            .setAge(23)
+            .setWeight("165.0")
+            .setHeightFeet("5.0")
+            .setHeightInches("8.0")
+            .setAge("23")
             .setGender("Male")
             .setActivityLevel("Sedentary")
             .setGoal("Maintain Weight")
-            .setManualCalories(2000.0)
-            .setInsulinToCarbRatio(4.0)
-            .setCorrectionDose(3.0)
-            .setTargetGlucose(100.0)
+            .setManualCalories("2000.0")
+            .setInsulinToCarbRatio("4.0")
+            .setCorrectionDose("3.0")
+            .setTargetGlucose("100.0")
             .setCarbOnly(false)
             .build()
     )
 
     override suspend fun updateSettings(
-        weight: Double?,
-        heightFeet: Double?,
-        heightInches: Double?,
-        age: Int?,
+        weight: String?,
+        heightFeet: String?,
+        heightInches: String?,
+        age: String?,
         gender: String?,
         activityLevel: String?,
         goal: String?,
-        manualCalories: Double?,
-        insulinToCarbRatio: Double?,
-        correctionDose: Double?,
-        targetGlucose: Double?,
+        manualCalories: String?,
+        insulinToCarbRatio: String?,
+        correctionDose: String?,
+        targetGlucose: String?,
         carbOnly: Boolean?
     ) {
         return
