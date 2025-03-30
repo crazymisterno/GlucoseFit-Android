@@ -62,11 +62,3 @@ fun GlucoseFitMaterialTheme(
         content = content
     )
 }
-
-class Theme(
-    var background: Brush,
-    var cardBackground: Color,
-    var textColor: Color,
-    var accentColor: Color,
-    var successColor: Color
-)
