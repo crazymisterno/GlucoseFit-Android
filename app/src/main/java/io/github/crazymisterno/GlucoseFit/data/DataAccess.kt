@@ -18,7 +18,7 @@ interface MealAccess {
     suspend fun insertAllMeals(vararg meals: MealLogEntry): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertFood(food: FoodItem): Long
+    suspend fun insertFood(vararg food: FoodItem): List<Long>
 
     @Delete
     suspend fun deleteFood(food: FoodItem)
