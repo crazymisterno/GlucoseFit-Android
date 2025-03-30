@@ -5,8 +5,11 @@ import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
 import androidx.datastore.dataStore
-import com.codelab.android.datastore.Settings
+import io.github.crazymisterno.GlucoseFit.data.proto.Settings
 import com.google.protobuf.InvalidProtocolBufferException
+import io.github.crazymisterno.GlucoseFit.data.proto.ActivityLevel
+import io.github.crazymisterno.GlucoseFit.data.proto.GenderOption
+import io.github.crazymisterno.GlucoseFit.data.proto.Goal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.InputStream
@@ -46,14 +49,14 @@ class SettingsDataProvider(
         heightFeet: String?,
         heightInches: String?,
         age: String?,
-        gender: String?,
-        activityLevel: String?,
-        goal: String?,
+        gender: GenderOption?,
+        activityLevel: ActivityLevel?,
+        goal: Goal?,
         manualCalories: String?,
         insulinToCarbRatio: String?,
         correctionDose: String?,
         targetGlucose: String?,
-        carbOnly: Boolean?
+        carbOnly: Boolean?,
     ) {
         dataStore.updateData { preferences ->
             var builder = preferences.toBuilder()
@@ -94,13 +97,40 @@ interface SettingsProvider {
         heightFeet: String? = null,
         heightInches: String? = null,
         age: String? = null,
-        gender: String? = null,
-        activityLevel: String? = null,
-        goal: String? = null,
+        gender: GenderOption? = null,
+        activityLevel: ActivityLevel? = null,
+        goal: Goal? = null,
         manualCalories: String? = null,
         insulinToCarbRatio: String? = null,
         correctionDose: String? = null,
         targetGlucose: String? = null,
-        carbOnly: Boolean? = null
+        carbOnly: Boolean? = null,
     )
+}
+
+fun GenderOption.format(): String {
+    return when (this) {
+        GenderOption.Male -> "Male"
+        GenderOption.Female -> "Female"
+        GenderOption.UNRECOGNIZED -> "<Select>"
+    }
+}
+
+fun ActivityLevel.format(): String {
+    return when (this) {
+        ActivityLevel.Sedentary -> "Sedentary"
+        ActivityLevel.LightlyActive -> "Lightly Active"
+        ActivityLevel.Active -> "Active"
+        ActivityLevel.VeryActive -> "Very Active"
+        ActivityLevel.UNRECOGNIZED -> "<Select>"
+    }
+}
+
+fun Goal.format(): String {
+    return when (this) {
+        Goal.Maintain -> "Maintain Weight"
+        Goal.LoseOne -> "Lose 1lb a week"
+        Goal.GainOne -> "Gain 1lb a week"
+        Goal.UNRECOGNIZED -> "<Select>"
+    }
 }
