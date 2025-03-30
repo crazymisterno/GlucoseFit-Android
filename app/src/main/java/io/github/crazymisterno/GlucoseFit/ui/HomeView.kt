@@ -4,10 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,8 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,13 +48,14 @@ import androidx.navigation.toRoute
 import androidx.room.Room
 import com.zedalpha.shadowgadgets.compose.clippedShadow
 import com.zedalpha.shadowgadgets.compose.shadowCompat
-import io.github.crazymisterno.GlucoseFit.data.DataManager
+import io.github.crazymisterno.GlucoseFit.data.DataViewModel
 import io.github.crazymisterno.GlucoseFit.data.MealLogEntry
 import io.github.crazymisterno.GlucoseFit.data.MealWithFood
 import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import io.github.crazymisterno.GlucoseFit.dev.PreviewDate
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -66,12 +73,14 @@ data class AddFood(
     val mealId: Int
 )
 
-var queryAdded = false
-
+@Preview
 @Composable
-fun HomeView(settings: SettingsViewModel, db: DataManager, date: LocalDate) {
-    val context = rememberCoroutineScope()
-    val meals by db.mealAccess().getByDate(date).collectAsStateWithLifecycle(listOf())
+fun HomeView(
+    @PreviewParameter(PreviewDate::class) date: LocalDate,
+    db: DataViewModel = hiltViewModel()
+) {
+    val meals by db.mealsForToday.collectAsState()
+
     if (meals.isEmpty()) {
         val breakfast = MealLogEntry(
             name = "Breakfast",
@@ -89,11 +98,7 @@ fun HomeView(settings: SettingsViewModel, db: DataManager, date: LocalDate) {
             name = "Snack",
             date = date
         )
-        LaunchedEffect(1) {
-            context.launch {
-                db.mealAccess().insertAllMeals(breakfast, lunch, dinner, snack)
-            }
-        }
+        db.insertBlankMeals(breakfast, lunch, dinner, snack)
     }
 
     var calories = 0
@@ -109,24 +114,18 @@ fun HomeView(settings: SettingsViewModel, db: DataManager, date: LocalDate) {
         navigator.createGraph(startDestination = Home
         ) {
             composable<Home> {
-                HomeRoot(date, meals, settings.finalCalories, loggedCalories) { id ->
-                    navigator.navigate(route = Meal(id))
+                HomeRoot(date, meals) { id ->
+                    navigator.navigate(Meal(id))
                 }
             }
             composable<Meal> { entry ->
                 val meal = entry.toRoute<Meal>()
-                val logEntry: MealWithFood;
-                runBlocking { logEntry = db.mealAccess().getById(meal.id) }
-                MealLogView(logEntry, db)
+                MealLogView(meal.id)
             }
             composable<AddFood> { entry ->
                 val props = entry.toRoute<AddFood>()
                 if (props.method == 0) {
-                    val logEntry: MealWithFood;
-                    runBlocking {
-                        logEntry = db.mealAccess().getById(props.mealId)
-                    }
-                    AddFoodView(logEntry, db)
+                    AddFoodView(props.mealId)
                 }
             }
         }
@@ -138,11 +137,19 @@ fun HomeView(settings: SettingsViewModel, db: DataManager, date: LocalDate) {
 @Composable
 fun HomeRoot(
     date: LocalDate,
-    meals: List<MealWithFood>,
-    finalCals: Int,
-    currentCals: Int,
+    mealList: List<MealWithFood>,
+    settings: SettingsViewModel = hiltViewModel(),
+    db: DataViewModel = hiltViewModel(),
     navigate: (Int) -> Unit
 ) {
+    var currentCals = 0;
+    mealList.forEach { meal ->
+        meal.food.forEach { item ->
+            currentCals += item.calories.toInt()
+        }
+    }
+    val finalCals = settings.finalCalories
+
     Column(modifier = Modifier
         .background(Brush.horizontalGradient(listOf(
             MaterialTheme.colorScheme.primary,
@@ -243,19 +250,5 @@ fun MealSection(meal: MealWithFood, pressed: () -> Unit) {
             fontSize = 22.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewHome() {
-    val date = LocalDate.now()
-    val db = Room.inMemoryDatabaseBuilder(
-        LocalContext.current,
-        DataManager::class.javaObjectType
-    ).build()
-    val settings = SettingsViewModel(PreviewSettings())
-    GlucoseFitMaterialTheme {
-        HomeView(settings, db, date)
     }
 }

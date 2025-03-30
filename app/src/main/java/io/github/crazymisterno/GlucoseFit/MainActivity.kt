@@ -1,5 +1,6 @@
 package io.github.crazymisterno.GlucoseFit
 
+import android.app.Application
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.activity.ComponentActivity
@@ -12,43 +13,30 @@ import androidx.room.Room
 import io.github.crazymisterno.GlucoseFit.data.DataManager
 import io.github.crazymisterno.GlucoseFit.data.SettingsDataProvider
 import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
-import io.github.crazymisterno.GlucoseFit.data.settings
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import io.github.crazymisterno.GlucoseFit.ui.ContentView
-import io.github.crazymisterno.GlucoseFit.ui.PreviewSettings
 import io.github.crazymisterno.GlucoseFit.ui.SettingsView
 import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
 
+@HiltAndroidApp
+class App : Application()
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val provider = SettingsDataProvider(applicationContext.settings)
-        val model = SettingsViewModel(provider)
-        val db = Room.databaseBuilder(
-            applicationContext,
-            DataManager::class.javaObjectType,
-            "glucosefitdata.db"
-        ).build()
         enableEdgeToEdge()
         setContent {
-            Main(model, db)
+            Main()
         }
-    }
-}
-
-@Composable
-fun Main(settings: SettingsViewModel, db: DataManager) {
-    GlucoseFitMaterialTheme {
-        ContentView(settings, db)
     }
 }
 
 @Preview
 @Composable
-fun Preview() {
-    val model = SettingsViewModel(PreviewSettings())
-    val db = Room.inMemoryDatabaseBuilder(
-        LocalContext.current,
-        DataManager::class.javaObjectType
-    ).build()
-    Main(model, db)
+fun Main() {
+    GlucoseFitMaterialTheme {
+        ContentView()
+    }
 }

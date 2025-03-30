@@ -1,4 +1,6 @@
 import com.google.protobuf.gradle.id
+import org.gradle.internal.extensions.stdlib.capitalized
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompileTool
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,6 +10,7 @@ plugins {
     id("androidx.room") version "2.6.1"
     id("com.google.protobuf") version "0.9.4"
     kotlin("plugin.serialization") version "2.0.21"
+    id("com.google.dagger.hilt.android")
 }
 
 protobuf {
@@ -64,6 +67,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    androidComponents {
+        onVariants(selector().all()) { variant ->
+            afterEvaluate {
+                project.tasks.getByName("ksp" + variant.name.capitalized() + "Kotlin") {
+                    val buildConfigTask = project.tasks.getByName("generate${variant.name.capitalized()}Proto")
+                            as com.google.protobuf.gradle.GenerateProtoTask
+                    dependsOn(buildConfigTask)
+                    (this as AbstractKotlinCompileTool<*>).setSource(buildConfigTask.outputBaseDir)
+                }
+            }
+        }
+    }
 
     buildTypes {
         release {
@@ -75,11 +90,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
@@ -128,14 +143,11 @@ dependencies {
     implementation(libs.androidx.datastore.rxjava3)
     implementation(libs.androidx.room.ktx)
     implementation(libs.compose)
-    implementation("com.google.dagger:hilt-android:2.50")
-    ksp("com.google.dagger:hilt-compiler:2.50")
-
-    // ViewModel support
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     // For Jetpack Compose integration (if using Compose)
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 
 configurations {

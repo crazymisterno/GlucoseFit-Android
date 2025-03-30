@@ -27,8 +27,9 @@ import io.github.crazymisterno.GlucoseFit.data.DataManager
 import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
 import java.time.LocalDate
 
+@Preview
 @Composable
-fun ContentView(model: SettingsViewModel, db: DataManager) {
+fun ContentView() {
     var selectedTab by remember { mutableIntStateOf(1) }
 
     val tabNames = listOf("Settings", "Home", "Dose Calculator", "Calendar")
@@ -59,22 +60,10 @@ fun ContentView(model: SettingsViewModel, db: DataManager) {
             }
         }
         when (selectedTab) {
-            0 -> SettingsView(model)
-            1 -> HomeView(model, db, LocalDate.now())
-            2 -> DoseCalculatorView(model, db, LocalDate.now())
-            3 -> CalendarView(db)
+            0 -> SettingsView()
+            1 -> HomeView(LocalDate.now())
+            2 -> DoseCalculatorView()
+            3 -> CalendarView()
         }
     }
-}
-
-
-@Preview
-@Composable
-fun PreviewContent() {
-    val model = SettingsViewModel(PreviewSettings())
-    val db = Room.inMemoryDatabaseBuilder(
-        LocalContext.current,
-        DataManager::class.javaObjectType
-    ).build()
-    ContentView(model, db)
 }

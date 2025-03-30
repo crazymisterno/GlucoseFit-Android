@@ -48,8 +48,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.crazymisterno.GlucoseFit.data.proto.Settings
-import io.github.crazymisterno.GlucoseFit.data.SettingsProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.data.format
 import io.github.crazymisterno.GlucoseFit.data.proto.ActivityLevel
@@ -60,8 +59,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun SettingsView(viewModel: SettingsViewModel) {
+fun SettingsView(viewModel: SettingsViewModel = hiltViewModel()) {
     val settings = viewModel.settings.collectAsState()
     var genderDropDown by remember { mutableStateOf(false) }
     var activityDropDown by remember { mutableStateOf(false) }
@@ -483,51 +483,5 @@ fun SettingsView(viewModel: SettingsViewModel) {
         }
 
 //        Spacer(Modifier.height(20.dp))
-    }
-}
-
-
-@Preview
-@Composable
-fun Preview() {
-    val model = SettingsViewModel(PreviewSettings())
-    GlucoseFitMaterialTheme {
-        SettingsView(model)
-    }
-}
-
-class PreviewSettings : SettingsProvider {
-    override val shared: Flow<Settings> = flowOf(
-        Settings.newBuilder()
-            .setWeight("165.0")
-            .setHeightFeet("5.0")
-            .setHeightInches("8.0")
-            .setAge("23")
-            .setGender(GenderOption.Male)
-            .setActivityLevel(ActivityLevel.Sedentary)
-            .setGoal(Goal.Maintain)
-            .setManualCalories("2000.0")
-            .setInsulinToCarbRatio("4.0")
-            .setCorrectionDose("3.0")
-            .setTargetGlucose("100.0")
-            .setCarbOnly(false)
-            .build()
-    )
-
-    override suspend fun updateSettings(
-        weight: String?,
-        heightFeet: String?,
-        heightInches: String?,
-        age: String?,
-        gender: GenderOption?,
-        activityLevel: ActivityLevel?,
-        goal: Goal?,
-        manualCalories: String?,
-        insulinToCarbRatio: String?,
-        correctionDose: String?,
-        targetGlucose: String?,
-        carbOnly: Boolean?
-    ) {
-        return
     }
 }

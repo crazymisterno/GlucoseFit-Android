@@ -11,6 +11,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.proto.ActivityLevel
 import io.github.crazymisterno.GlucoseFit.data.proto.GenderOption
 import io.github.crazymisterno.GlucoseFit.data.proto.Goal
@@ -22,7 +23,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class SettingsViewModel (
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
     private val provider: SettingsProvider
 ) : ViewModel() {
 

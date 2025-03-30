@@ -12,15 +12,11 @@ import java.time.LocalDate
 fun CalendarView(db: DataManager) {
 
 }
+import androidx.hilt.navigation.compose.hiltViewModel
+import io.github.crazymisterno.GlucoseFit.data.DataViewModel
 
 @Preview
 @Composable
-fun PreviewCalendarView() {
-    val db = Room.inMemoryDatabaseBuilder(
-        LocalContext.current,
-        DataManager::class.javaObjectType
-    ).build()
-    GlucoseFitMaterialTheme {
-        CalendarView(db)
-    }
+fun CalendarView(db: DataViewModel = hiltViewModel()) {
+
 }

@@ -3,10 +3,17 @@ package io.github.crazymisterno.GlucoseFit.data
 import android.content.Context
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.Serializer
 import androidx.datastore.dataStore
+import androidx.datastore.dataStoreFile
 import io.github.crazymisterno.GlucoseFit.data.proto.Settings
 import com.google.protobuf.InvalidProtocolBufferException
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import io.github.crazymisterno.GlucoseFit.data.proto.ActivityLevel
 import io.github.crazymisterno.GlucoseFit.data.proto.GenderOption
 import io.github.crazymisterno.GlucoseFit.data.proto.Goal
@@ -14,6 +21,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.InputStream
 import java.io.OutputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
 object SettingsSerializer : Serializer<Settings> {
     override val defaultValue: Settings
@@ -32,12 +41,21 @@ object SettingsSerializer : Serializer<Settings> {
     }
 }
 
-val Context.settings: DataStore<Settings> by dataStore(
-    fileName = "settings.pb",
-    serializer = SettingsSerializer
-)
+@Module
+@InstallIn(SingletonComponent::class)
+object SettingsDI {
+    @Provides
+    @Singleton
+    fun settings(@ApplicationContext context: Context): SettingsProvider {
+        val store = DataStoreFactory.create(
+            serializer = SettingsSerializer,
+            produceFile = { context.dataStoreFile("settings.pb") }
+        )
+        return SettingsDataProvider(store)
+    }
+}
 
-class SettingsDataProvider(
+class SettingsDataProvider @Inject constructor(
     private val dataStore: DataStore<Settings>
 ) : SettingsProvider {
     override val shared: Flow<Settings> = dataStore.data.map { preferences ->
