@@ -220,7 +220,6 @@ fun MealSection(meal: MealWithFood, pressed: () -> Unit) {
     }
     Column(
         Modifier
-            .padding(15.dp)
             .fillMaxWidth()
             .clippedShadow(
                 20.dp,
@@ -230,6 +229,7 @@ fun MealSection(meal: MealWithFood, pressed: () -> Unit) {
             .clickable {
                 pressed()
             }
+            .padding(10.dp)
     ) {
         Text(
             meal.meal.name,
