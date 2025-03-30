@@ -16,16 +16,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Blue,
-    secondary = Green,
-    tertiary = Pink80
+    primary = DarkBgBlue,
+    secondary = DarkBgGreen,
+    surface = DarkCardBg,
+    primaryContainer = DarkAccent,
+    secondaryContainer = DarkSuccess
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Blue,
-    secondary = Green,
-    tertiary = Pink40
-
+    primary = LightBgBlue,
+    secondary = LightBgGreen,
+    surface = LightCardBg,
+    primaryContainer = LightAccent,
+    secondaryContainer = LightSuccess
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
@@ -45,11 +48,6 @@ fun GlucoseFitMaterialTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
@@ -61,16 +59,10 @@ fun GlucoseFitMaterialTheme(
     )
 }
 
-@Composable
-fun GlucoseFitRoot(content: @Composable () -> Unit) {
-    GlucoseFitMaterialTheme {
-        Box(modifier = Modifier
-            .background(
-                Brush.linearGradient(
-                0.0f to Color(android.graphics.Color.parseColor("#539FAD")),
-                1.0f to Color(android.graphics.Color.parseColor("#9AE4BF"))
-                ))) {
-            content()
-        }
-    }
-}
+class Theme(
+    var background: Brush,
+    var cardBackground: Color,
+    var textColor: Color,
+    var accentColor: Color,
+    var successColor: Color
+)
