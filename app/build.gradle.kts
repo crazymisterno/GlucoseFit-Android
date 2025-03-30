@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp") version "2.0.21-1.0.27"
     id("androidx.room") version "2.6.1"
     id("com.google.protobuf") version "0.9.4"
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 protobuf {
@@ -125,6 +126,16 @@ dependencies {
     implementation(libs.androidx.datastore.rxjava2)
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.androidx.datastore.rxjava3)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.compose)
+    implementation("com.google.dagger:hilt-android:2.50")
+    ksp("com.google.dagger:hilt-compiler:2.50")
+
+    // ViewModel support
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+
+    // For Jetpack Compose integration (if using Compose)
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 }
 
 configurations {
