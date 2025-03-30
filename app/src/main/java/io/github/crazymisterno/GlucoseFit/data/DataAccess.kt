@@ -47,6 +47,8 @@ interface SavedFoodAccess {
     @Query("SELECT * FROM savedFood WHERE name LIKE '%' || :query || '%'")
     fun search(query: String): Flow<List<SavedFoodItem>>
 
+    @Query("SELECT * FROM savedFood")
+    fun getAll(): Flow<List<SavedFoodItem>>
 }
 
 @Dao
