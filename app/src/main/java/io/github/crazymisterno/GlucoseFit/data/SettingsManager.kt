@@ -5,7 +5,6 @@ import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.Serializer
-import androidx.datastore.dataStore
 import androidx.datastore.dataStoreFile
 import io.github.crazymisterno.GlucoseFit.data.proto.Settings
 import com.google.protobuf.InvalidProtocolBufferException

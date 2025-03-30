@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -54,9 +52,6 @@ import io.github.crazymisterno.GlucoseFit.data.format
 import io.github.crazymisterno.GlucoseFit.data.proto.ActivityLevel
 import io.github.crazymisterno.GlucoseFit.data.proto.GenderOption
 import io.github.crazymisterno.GlucoseFit.data.proto.Goal
-import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview

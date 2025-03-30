@@ -6,9 +6,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.DataViewModel
 import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
-import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
-import java.time.LocalDate
-
 
 @Preview
 @Composable

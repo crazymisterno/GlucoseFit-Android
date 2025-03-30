@@ -2,21 +2,14 @@ package io.github.crazymisterno.GlucoseFit
 
 import android.app.Application
 import android.os.Bundle
-import android.provider.ContactsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.room.Room
-import io.github.crazymisterno.GlucoseFit.data.DataManager
-import io.github.crazymisterno.GlucoseFit.data.SettingsDataProvider
-import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import io.github.crazymisterno.GlucoseFit.ui.ContentView
-import io.github.crazymisterno.GlucoseFit.ui.SettingsView
 import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
 
 @HiltAndroidApp
