@@ -48,8 +48,8 @@ fun ContentView(model: SettingsViewModel, db: DataManager) {
                     selected = selectedTab == index,
                     onClick = { selectedTab = index },
                     text = { Text(name) },
-                    selectedContentColor = MaterialTheme.colorScheme.primary,
-                    unselectedContentColor = MaterialTheme.colorScheme.secondary,
+                    selectedContentColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    unselectedContentColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     modifier = Modifier.statusBarsPadding()
                         .background(Brush.horizontalGradient(listOf<Color>(
                             MaterialTheme.colorScheme.primary.copy(alpha = 0.0f),

@@ -20,7 +20,9 @@ private val DarkColorScheme = darkColorScheme(
     secondary = DarkBgGreen,
     surface = DarkCardBg,
     primaryContainer = DarkAccent,
-    secondaryContainer = DarkSuccess
+    secondaryContainer = DarkSuccess,
+    surfaceContainerHigh = LightBgBlue,
+    surfaceContainerLow = LightBgGreen
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -28,7 +30,9 @@ private val LightColorScheme = lightColorScheme(
     secondary = LightBgGreen,
     surface = LightCardBg,
     primaryContainer = LightAccent,
-    secondaryContainer = LightSuccess
+    secondaryContainer = LightSuccess,
+    surfaceContainerHigh = DarkBgBlue,
+    surfaceContainerLow = DarkBgGreen
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
