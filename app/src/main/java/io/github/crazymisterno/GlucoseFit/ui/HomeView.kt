@@ -170,6 +170,7 @@ fun HomeRoot(
                 fontSize = 24.sp,
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
@@ -177,6 +178,7 @@ fun HomeRoot(
                 fontSize = 40.sp,
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
@@ -192,6 +194,7 @@ fun HomeRoot(
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                 fontSize = 40.sp,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -227,11 +230,13 @@ fun MealSection(meal: MealWithFood, pressed: () -> Unit) {
             meal.meal.name,
             fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
             fontSize = 30.sp,
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             "Carbs: $totalCarbs",
             fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
-            fontSize = 22.sp
+            fontSize = 22.sp,
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
