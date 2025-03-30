@@ -198,12 +198,17 @@ fun HomeRoot(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        meals.forEach { meal ->
-            MealSection(meal) {
-                navigate(meal.meal.id)
+        Spacer(Modifier.height(15.dp))
+        LazyColumn(
+            Modifier.fillMaxHeight()
+        ) {
+            items(mealList, key = {meal -> meal.meal.id}) { meal ->
+                MealSection(meal) {
+                    navigate(meal.meal.id)
+                }
+                Spacer(Modifier.height(15.dp))
             }
         }
-
     }
 }
 
