@@ -39,20 +39,21 @@ interface MealAccess {
 @Dao
 interface SavedFoodAccess {
     @Insert
-    fun insert(food: SavedFoodItem)
+    suspend fun insert(food: SavedFoodItem)
 
     @Delete
-    fun delete(food: SavedFoodItem)
+    suspend fun delete(food: SavedFoodItem)
 
     @Query("SELECT * FROM savedFood WHERE name LIKE '%' || :query || '%'")
-    fun search(query: String): List<SavedFoodItem>
+    fun search(query: String): Flow<List<SavedFoodItem>>
+
 }
 
 @Dao
 interface CalendarAccess {
     @Insert
-    fun insert(entry: CalendarEntry)
+    suspend fun insert(entry: CalendarEntry)
 
     @Delete
-    fun delete(entry: CalendarEntry)
+    suspend fun delete(entry: CalendarEntry)
 }
