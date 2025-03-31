@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -24,6 +25,7 @@ import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -77,6 +79,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     carbField = it
                 },
                 label = { Text("Carbs (g)") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 isError = carbField.text.toDoubleOrNull() == null
             )
             Spacer(Modifier.height(15.dp))
@@ -86,6 +89,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     calField = it
                 },
                 label = { Text("Calories") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 isError = calField.text.toDoubleOrNull() == null
             )
             Spacer(Modifier.padding(15.dp))
