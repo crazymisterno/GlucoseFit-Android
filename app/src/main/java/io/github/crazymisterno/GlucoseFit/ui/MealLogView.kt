@@ -133,6 +133,7 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .fillMaxHeight(0.7f)
             .clip(RoundedCornerShape(15.dp))
             .background(MaterialTheme.colorScheme.surfaceDim)
     ) {
@@ -143,63 +144,84 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
                 .padding(top = 15.dp),
             color = MaterialTheme.colorScheme.onSurface
         )
-        LazyColumn(
-            modifier = Modifier
-                .padding(horizontal = 15.dp)
-                .padding(bottom = 15.dp)
-                .fillMaxHeight(0.7f)
-        ) {
-            items(list, { food -> food.id }) { item ->
-                Row(
+        if (list.isEmpty()) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp)
+                    .padding(vertical = 10.dp)
+                    .clip(RoundedCornerShape(15.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+            ) {
+                Text(
+                    "No food logged for this meal",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 15.dp)
-                        .padding(vertical = 10.dp)
-                        .clip(RoundedCornerShape(15.dp))
-                        .background(MaterialTheme.colorScheme.surface),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        Modifier
-                            .padding(10.dp),
-                        verticalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Text(
-                            item.name,
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            item.carbs.toString() + "g carbs, " +
-                            item.calories + " cal",
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = Color.Gray
-                        )
-                    }
+                        .padding(15.dp)
+                )
+            }
+        }
+        else {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(horizontal = 15.dp)
+                    .padding(bottom = 15.dp)
+            ) {
+                items(list, { food -> food.id }) { item ->
                     Row(
-                        Modifier
-                            .padding(10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 15.dp)
+                            .padding(vertical = 10.dp)
+                            .clip(RoundedCornerShape(15.dp))
+                            .background(MaterialTheme.colorScheme.surface),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            Icons.Filled.Delete,
-                            contentDescription = "Delete Button",
-                            tint = Color.Red,
-                            modifier = Modifier
-                                .clickable {
-                                    db.deleteFood(item)
-                                }
-                        )
-                        Spacer(Modifier.width(5.dp))
-                        Icon(
-                            Icons.Filled.AddCircle,
-                            contentDescription = "Save Button",
-                            tint = Color.Green,
-                            modifier = Modifier
-                                .clickable {
-                                    db.saveFood(item)
-                                }
-                        )
+                        Column(
+                            Modifier
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.SpaceAround
+                        ) {
+                            Text(
+                                item.name,
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                item.carbs.toString() + "g carbs, " +
+                                        item.calories + " cal",
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = Color.Gray
+                            )
+                        }
+                        Row(
+                            Modifier
+                                .padding(10.dp)
+                        ) {
+                            Icon(
+                                Icons.Filled.Delete,
+                                contentDescription = "Delete Button",
+                                tint = Color.Red,
+                                modifier = Modifier
+                                    .clickable {
+                                        db.deleteFood(item)
+                                    }
+                            )
+                            Spacer(Modifier.width(5.dp))
+                            Icon(
+                                Icons.Filled.AddCircle,
+                                contentDescription = "Save Button",
+                                tint = Color.Green,
+                                modifier = Modifier
+                                    .clickable {
+                                        db.saveFood(item)
+                                    }
+                            )
+                        }
                     }
                 }
             }
