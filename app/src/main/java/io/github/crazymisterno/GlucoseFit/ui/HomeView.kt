@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.toRoute
@@ -53,7 +54,10 @@ data class Meal(
 )
 @Serializable
 data class AddFood(
-    val method: Int,
+    val mealId: Int
+)
+@Serializable
+data class ImportSaved(
     val mealId: Int
 )
 
@@ -104,13 +108,22 @@ fun HomeView(
             }
             composable<Meal> { entry ->
                 val meal = entry.toRoute<Meal>()
-                MealLogView(meal.id)
-            }
-            composable<AddFood> { entry ->
-                val props = entry.toRoute<AddFood>()
-                if (props.method == 0) {
-                    AddFoodView(props.mealId)
+                MealLogView(meal.id) { method, id ->
+                    when (method) {
+                        0 -> navigator.navigate(AddFood(id))
+                        1 -> navigator.navigate(ImportSaved(id))
+                    }
                 }
+            }
+            dialog<AddFood> { entry ->
+                val props = entry.toRoute<AddFood>()
+                AddFoodView(props.mealId) {
+                    navigator.popBackStack()
+                }
+            }
+            dialog<ImportSaved> { entry ->
+                val props = entry.toRoute<ImportSaved>()
+                SavedFoodView(props.mealId)
             }
         }
     }
