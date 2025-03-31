@@ -14,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Qualifier
+import javax.inject.Singleton
 
 
 class DateConverter {
@@ -54,6 +55,7 @@ object DatabaseDI {
     // Use this annotation for in-memory database for development
     @InMemoryDb
     @Provides
+    @Singleton
     fun memDatabase(@ApplicationContext context: Context): DataManager {
         return Room.inMemoryDatabaseBuilder(
             context,
@@ -64,6 +66,7 @@ object DatabaseDI {
     // Use this annotation for on-disk database for production
     @InStorageDb
     @Provides
+    @Singleton
     fun diskDatabase(@ApplicationContext context: Context): DataManager {
         return Room.databaseBuilder(
             context,
