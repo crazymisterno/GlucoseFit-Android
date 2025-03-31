@@ -95,7 +95,6 @@ fun HomeView(
             calories += item.calories.toInt()
         }
     }
-    var loggedCalories by remember { mutableIntStateOf(calories) }
 
     val navigator = rememberNavController()
     val graph = remember(navigator) {
@@ -138,10 +137,9 @@ fun HomeRoot(
     date: LocalDate,
     mealList: List<MealWithFood>,
     settings: SettingsViewModel = hiltViewModel(),
-    db: DataViewModel = hiltViewModel(),
     navigate: (Int) -> Unit
 ) {
-    var currentCals = 0;
+    var currentCals = 0
     mealList.forEach { meal ->
         meal.food.forEach { item ->
             currentCals += item.calories.toInt()
