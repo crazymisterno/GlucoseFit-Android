@@ -3,7 +3,6 @@ package io.github.crazymisterno.GlucoseFit.data
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -24,7 +23,12 @@ class DataViewModel @Inject constructor(
         }.stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
 
-    val savedFood: Flow<List<SavedFoodItem>> = database.savedFoodAccess().getAll()
+    val savedFood: StateFlow<List<SavedFoodItem>> = database.savedFoodAccess().getAll()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            listOf()
+        )
 
     fun mealsForDay(date: LocalDate): StateFlow<List<MealWithFood>> {
         return database.mealAccess().getByDate(date)
@@ -95,7 +99,12 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    fun searchSavedItems(query: String): Flow<List<SavedFoodItem>> {
+    fun searchSavedItems(query: String): StateFlow<List<SavedFoodItem>> {
         return database.savedFoodAccess().search(query)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                listOf()
+            )
     }
 }
