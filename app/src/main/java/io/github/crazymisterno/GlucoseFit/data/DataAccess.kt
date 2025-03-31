@@ -29,7 +29,7 @@ interface MealAccess {
 
     @Transaction
     @Query("SELECT * FROM meals WHERE id = :id LIMIT 1")
-    suspend fun getById(id: Int): MealWithFood
+    fun getById(id: Int): Flow<MealWithFood>
 
     @Transaction
     @Query("SELECT * FROM food WHERE mealId = :mealId AND name LIKE '%' || :query || '%'")
