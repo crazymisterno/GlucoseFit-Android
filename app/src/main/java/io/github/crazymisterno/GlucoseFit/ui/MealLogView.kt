@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -146,6 +147,7 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
             modifier = Modifier
                 .padding(horizontal = 15.dp)
                 .padding(bottom = 15.dp)
+                .fillMaxHeight(0.7f)
         ) {
             items(list, { food -> food.id }) { item ->
                 Row(
