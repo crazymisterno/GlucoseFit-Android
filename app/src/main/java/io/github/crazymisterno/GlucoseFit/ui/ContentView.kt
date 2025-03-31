@@ -3,6 +3,8 @@ package io.github.crazymisterno.GlucoseFit.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -11,22 +13,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Preview
 @Composable
 fun ContentView() {
-    var selectedTab by remember { mutableIntStateOf(1) }
-
     val tabNames = listOf("Settings", "Home", "Dose Calculator", "Calendar")
+    var pagerState = rememberPagerState(1) { tabNames.size }
+    val scope = rememberCoroutineScope()
     Column {
         TabRow(
-            selectedTabIndex = selectedTab,
+            selectedTabIndex = pagerState.currentPage,
             modifier = Modifier
                 .background(
                     Brush.horizontalGradient(listOf<Color>(
@@ -37,8 +41,12 @@ fun ContentView() {
         ) {
             tabNames.forEachIndexed { index, name ->
                 Tab(
-                    selected = selectedTab == index,
-                    onClick = { selectedTab = index },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
                     text = { Text(name) },
                     selectedContentColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     unselectedContentColor = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -50,11 +58,13 @@ fun ContentView() {
                 )
             }
         }
-        when (selectedTab) {
-            0 -> SettingsView()
-            1 -> HomeView(LocalDate.now())
-            2 -> DoseCalculatorView()
-            3 -> CalendarView()
+        HorizontalPager(state = pagerState) { state ->
+            when (state) {
+                0 -> SettingsView()
+                1 -> HomeView(LocalDate.now())
+                2 -> DoseCalculatorView()
+                3 -> CalendarView()
+            }
         }
     }
 }
