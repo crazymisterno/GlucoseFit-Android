@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -30,8 +31,13 @@ class DataViewModel @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
     }
 
-    suspend fun idMeal(id: Int): MealWithFood {
-        return database.mealAccess().getById(id)
+    fun idMeal(id: Int): StateFlow<MealWithFood> {
+        return database.mealAccess().getById(id).distinctUntilChanged()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                MealWithFood(MealLogEntry(name = "", date = LocalDate.now()), listOf())
+            )
     }
 
     fun insertMeals(vararg meals: MealWithFood) {
@@ -46,6 +52,12 @@ class DataViewModel @Inject constructor(
     fun insertBlankMeals(vararg meals: MealLogEntry) {
         viewModelScope.launch {
             database.mealAccess().insertAllMeals(*meals)
+        }
+    }
+
+    fun addFood(item: FoodItem) {
+        viewModelScope.launch {
+            database.mealAccess().insertFood(item)
         }
     }
 
