@@ -123,7 +123,9 @@ fun HomeView(
             }
             dialog<ImportSaved> { entry ->
                 val props = entry.toRoute<ImportSaved>()
-                SavedFoodView(props.mealId)
+                SavedFoodView(props.mealId) {
+                    navigator.popBackStack()
+                }
             }
         }
     }
