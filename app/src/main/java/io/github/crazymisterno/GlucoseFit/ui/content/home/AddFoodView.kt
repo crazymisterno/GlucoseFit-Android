@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.ui
+package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,8 +29,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.crazymisterno.GlucoseFit.data.DataViewModel
-import io.github.crazymisterno.GlucoseFit.data.FoodItem
+import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
+import io.github.crazymisterno.GlucoseFit.data.storage.FoodItem
 
 @Composable
 fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> Unit) {

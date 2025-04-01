@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.ui
+package io.github.crazymisterno.GlucoseFit.ui.content
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -47,8 +47,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
-import io.github.crazymisterno.GlucoseFit.data.format
+import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
+import io.github.crazymisterno.GlucoseFit.data.settings.format
 import io.github.crazymisterno.GlucoseFit.data.proto.ActivityLevel
 import io.github.crazymisterno.GlucoseFit.data.proto.GenderOption
 import io.github.crazymisterno.GlucoseFit.data.proto.Goal
@@ -184,7 +184,7 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel()) {
                         },
                         label = @Composable { Text("Inches") },
                         modifier = Modifier
-                            .width(80.dp)
+                            .width(90.dp)
                             .focusRequester(textFocus),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )

@@ -15,6 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.crazymisterno.GlucoseFit.ui.content.CalendarView
+import io.github.crazymisterno.GlucoseFit.ui.content.DoseCalculatorView
+import io.github.crazymisterno.GlucoseFit.ui.content.SettingsView
+import io.github.crazymisterno.GlucoseFit.ui.content.home.HomeView
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 

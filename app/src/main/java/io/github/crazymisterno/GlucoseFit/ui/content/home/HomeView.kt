@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.ui
+package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,10 +34,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.toRoute
 import com.zedalpha.shadowgadgets.compose.clippedShadow
-import io.github.crazymisterno.GlucoseFit.data.DataViewModel
-import io.github.crazymisterno.GlucoseFit.data.MealLogEntry
-import io.github.crazymisterno.GlucoseFit.data.MealWithFood
-import io.github.crazymisterno.GlucoseFit.data.SettingsViewModel
+import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
+import io.github.crazymisterno.GlucoseFit.data.storage.MealLogEntry
+import io.github.crazymisterno.GlucoseFit.data.storage.MealWithFood
+import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.dev.PreviewDate
 import kotlinx.serialization.Serializable
 import java.time.LocalDate

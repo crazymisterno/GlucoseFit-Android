@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.data
+package io.github.crazymisterno.GlucoseFit.data.settings
 
 import android.content.Context
 import androidx.datastore.core.CorruptionException

@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.data
+package io.github.crazymisterno.GlucoseFit.data.storage
 
 import androidx.room.Dao
 import androidx.room.Delete

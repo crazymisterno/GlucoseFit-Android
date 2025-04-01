@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.ui
+package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,8 +38,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.crazymisterno.GlucoseFit.data.DataViewModel
-import io.github.crazymisterno.GlucoseFit.data.FoodItem
+import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
+import io.github.crazymisterno.GlucoseFit.data.storage.FoodItem
 import io.github.crazymisterno.GlucoseFit.dev.PreviewIds
 import java.time.format.TextStyle
 import java.util.Locale
@@ -127,7 +127,7 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.7f)
+            .fillMaxHeight(0.6f)
             .clip(RoundedCornerShape(15.dp))
             .background(MaterialTheme.colorScheme.surfaceDim)
     ) {

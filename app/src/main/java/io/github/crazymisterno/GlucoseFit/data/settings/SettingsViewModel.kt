@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.data
+package io.github.crazymisterno.GlucoseFit.data.settings
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf

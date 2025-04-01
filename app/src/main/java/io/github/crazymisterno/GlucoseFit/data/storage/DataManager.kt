@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.data
+package io.github.crazymisterno.GlucoseFit.data.storage
 
 import android.content.Context
 import androidx.room.Database

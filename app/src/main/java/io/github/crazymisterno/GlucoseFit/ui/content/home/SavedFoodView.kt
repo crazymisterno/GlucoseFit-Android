@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.ui
+package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,9 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.crazymisterno.GlucoseFit.data.DataViewModel
-import io.github.crazymisterno.GlucoseFit.data.FoodItem
+import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
+import io.github.crazymisterno.GlucoseFit.data.storage.FoodItem
 
 @Composable
 fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> Unit) {
@@ -56,12 +58,11 @@ fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () ->
     ) {
         Text(
             "Saved Food",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp)
+            modifier = Modifier.fillMaxWidth()
                 .padding(top = 15.dp)
         )
         OutlinedTextField(
@@ -71,9 +72,7 @@ fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () ->
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
-                .padding(bottom = 15.dp)
         )
-        Spacer(Modifier.height(10.dp))
         Column(
             Modifier
                 .fillMaxWidth()
@@ -90,12 +89,17 @@ fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () ->
                 Text(
                     "Nothing here",
                     style = MaterialTheme.typography.headlineSmall,
-                    color = Color.Gray
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp)
                 )
             }
             LazyColumn(
                 modifier = Modifier
                     .padding(10.dp)
+                    .fillMaxHeight(0.8f)
             ) {
                 items(loadList, { food -> food.id.toLong() }) { item ->
                     Row(
