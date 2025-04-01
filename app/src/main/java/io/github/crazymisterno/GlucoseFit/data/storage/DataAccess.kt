@@ -49,6 +49,9 @@ interface SavedFoodAccess {
 
     @Query("SELECT * FROM savedFood")
     fun getAll(): Flow<List<SavedFoodItem>>
+
+    @Query("SELECT * FROM savedFood WHERE id = :id LIMIT 1")
+    fun getById(id: Int): Flow<SavedFoodItem>
 }
 
 @Dao

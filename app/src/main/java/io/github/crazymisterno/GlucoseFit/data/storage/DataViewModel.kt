@@ -65,6 +65,27 @@ class DataViewModel @Inject constructor(
         }
     }
 
+    fun importFood(food: SavedFoodItem, mealId: Int) {
+        viewModelScope.launch {
+            val toImport = FoodItem(
+                mealId = mealId,
+                name = food.name,
+                carbs = food.carbs,
+                calories = food.calories
+            )
+            database.mealAccess().insertFood(toImport)
+        }
+    }
+
+    fun idSavedFood(id: Int): StateFlow<SavedFoodItem> {
+        return database.savedFoodAccess().getById(id)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                SavedFoodItem(name = "", calories = 0.0, carbs = 0.0)
+            )
+    }
+
     fun deleteFood(item: FoodItem) {
         viewModelScope.launch {
             database.mealAccess().deleteFood(item)

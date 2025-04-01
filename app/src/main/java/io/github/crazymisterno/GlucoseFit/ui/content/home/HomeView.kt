@@ -58,6 +58,11 @@ data class AddFood(
 data class ImportSaved(
     val mealId: Int
 )
+@Serializable
+data class SavedOptions(
+    val foodId: Int,
+    val mealId: Int
+)
 
 @Preview
 @Composable
@@ -120,7 +125,19 @@ fun HomeView(
             }
             dialog<ImportSaved> { entry ->
                 val props = entry.toRoute<ImportSaved>()
-                SavedFoodView(props.mealId) {
+                SavedFoodView(
+                    props.mealId,
+                    dialog = { food ->
+                        navigator.navigate(SavedOptions(food.id, props.mealId))
+                    }
+                ) {
+                    navigator.popBackStack()
+                }
+            }
+            dialog<SavedOptions> { entry ->
+                val name = entry.toRoute<SavedOptions>()
+                SavedFoodOptions(name.foodId, name.mealId) {
+                    navigator.popBackStack()
                     navigator.popBackStack()
                 }
             }
