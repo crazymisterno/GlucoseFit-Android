@@ -19,6 +19,7 @@ import io.github.crazymisterno.GlucoseFit.ui.content.CalendarView
 import io.github.crazymisterno.GlucoseFit.ui.content.DoseCalculatorView
 import io.github.crazymisterno.GlucoseFit.ui.content.SettingsView
 import io.github.crazymisterno.GlucoseFit.ui.content.home.HomeView
+import io.github.crazymisterno.GlucoseFit.ui.content.settings.SettingsNavigator
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -60,7 +61,7 @@ fun ContentView() {
         }
         HorizontalPager(state = pagerState) { state ->
             when (state) {
-                0 -> SettingsView()
+                0 -> SettingsNavigator()
                 1 -> HomeView(LocalDate.now())
                 2 -> DoseCalculatorView()
                 3 -> CalendarView()

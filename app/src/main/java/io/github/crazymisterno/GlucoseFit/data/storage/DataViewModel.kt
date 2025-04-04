@@ -3,6 +3,8 @@ package io.github.crazymisterno.GlucoseFit.data.storage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -10,6 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -127,5 +130,58 @@ class DataViewModel @Inject constructor(
                 SharingStarted.Eagerly,
                 listOf()
             )
+    }
+
+    var latestId = MutableStateFlow<Long?>(null)
+
+    fun addTimeSetting(setting: TimedSettings) {
+        viewModelScope.launch {
+            latestId.value = database.timedSettingAccess().addNew(setting)
+        }
+    }
+
+    fun removeTimeSetting(setting: TimedSettings) {
+        viewModelScope.launch {
+            database.timedSettingAccess().delete(setting)
+        }
+    }
+
+    fun removeTimeSetting(id: Int) {
+        viewModelScope.launch {
+            database.timedSettingAccess().deleteById(id)
+        }
+    }
+
+    fun getTimeSetting(): StateFlow<TimedSettings> {
+        return database.timedSettingAccess().getCurrentSetting()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                TimedSettings(LocalTime.now(), "", "", "")
+            )
+    }
+
+    fun getTimeSetting(id: Int): StateFlow<TimedSettings> {
+        return database.timedSettingAccess().getById(id)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                TimedSettings(LocalTime.now(), "", "", "")
+            )
+    }
+
+    fun getAllTimeSettings(): StateFlow<List<TimedSettings>> {
+        return  database.timedSettingAccess().getAll()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                listOf()
+            )
+    }
+
+    fun updateSetting(settings: TimedSettings) {
+        viewModelScope.launch {
+            database.timedSettingAccess().changeConfig(settings)
+        }
     }
 }

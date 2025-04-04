@@ -11,6 +11,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.crazymisterno.GlucoseFit.data.settings.TimeConverter
+import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
+import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettingsAccess
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Qualifier
@@ -31,14 +34,14 @@ class DateConverter {
     }
 }
 
-@Database(entities = [MealLogEntry::class, SavedFoodItem::class, FoodItem::class, CalendarEntry::class], version = 1)
-@TypeConverters(DateConverter::class)
+@Database(entities = [MealLogEntry::class, SavedFoodItem::class, FoodItem::class, TimedSettings::class], version = 1)
+@TypeConverters(DateConverter::class, TimeConverter::class)
 abstract class DataManager : RoomDatabase() {
     abstract fun mealAccess(): MealAccess
 
     abstract fun savedFoodAccess(): SavedFoodAccess
 
-    abstract fun calendarAccess(): CalendarAccess
+    abstract fun timedSettingAccess(): TimedSettingsAccess
 }
 
 @Qualifier

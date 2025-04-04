@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "91169059dad4813cc9aaab32088e36a6",
+    "identityHash": "ff11cd2d81184517a8a0940e8d19671d",
     "entities": [
       {
         "tableName": "meals",
@@ -183,12 +183,56 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "timedSettings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`startTime` TEXT NOT NULL, `insulinToCarbRatio` TEXT NOT NULL, `correctionDose` TEXT NOT NULL, `targetGlucose` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "startTime",
+            "columnName": "startTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "insulinToCarbRatio",
+            "columnName": "insulinToCarbRatio",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctionDose",
+            "columnName": "correctionDose",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "targetGlucose",
+            "columnName": "targetGlucose",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '91169059dad4813cc9aaab32088e36a6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff11cd2d81184517a8a0940e8d19671d')"
     ]
   }
 }

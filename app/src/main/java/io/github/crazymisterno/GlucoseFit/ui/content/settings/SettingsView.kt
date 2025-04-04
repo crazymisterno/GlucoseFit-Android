@@ -1,11 +1,10 @@
-package io.github.crazymisterno.GlucoseFit.ui.content
+package io.github.crazymisterno.GlucoseFit.ui.content.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -52,11 +51,11 @@ import io.github.crazymisterno.GlucoseFit.data.settings.format
 import io.github.crazymisterno.GlucoseFit.data.proto.ActivityLevel
 import io.github.crazymisterno.GlucoseFit.data.proto.GenderOption
 import io.github.crazymisterno.GlucoseFit.data.proto.Goal
+import io.github.crazymisterno.GlucoseFit.ui.content.settings.timed.TimedSettingsList
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun SettingsView(viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, Boolean) -> Unit) {
     val settings = viewModel.settings.collectAsState()
     var genderDropDown by remember { mutableStateOf(false) }
     var activityDropDown by remember { mutableStateOf(false) }
@@ -363,75 +362,8 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel()) {
                 }
             }
             Spacer(Modifier.padding(4.dp))
-            Column {
-                Text(
-                    "Insulin to carb ratio",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Row {
-                    Text(
-                        "1:",
-                        style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier.offset(y = 27.dp),
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Spacer(Modifier.padding(2.dp))
-                    TextField(
-                        value = viewModel.insulinToCarbRatioValue,
-                        onValueChange = { newVal ->
-                            viewModel.insulinToCarbRatioValue = newVal
-                        },
-                        label = { Text("Ratio") },
-                        modifier = Modifier
-                            .focusRequester(textFocus),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                }
-            }
-            Spacer(Modifier.padding(4.dp))
-            Column {
-                Text(
-                    "Correction Dose",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Row {
-                    Text(
-                        "1:",
-                        style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier
-                            .offset(y = 27.dp),
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Spacer(Modifier.padding(2.dp))
-                    TextField(
-                        value = viewModel.correctionDoseValue,
-                        onValueChange = { newVal ->
-                            viewModel.correctionDoseValue = newVal
-                        },
-                        label = { Text("Correction Dose") },
-                        modifier = Modifier
-                            .focusRequester(textFocus),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                }
-            }
-            Spacer(Modifier.padding(4.dp))
-            Column {
-                Text(
-                    "Target Glucose",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                TextField(
-                    value = viewModel.targetGlucoseValue,
-                    onValueChange = { newVal ->
-                        viewModel.targetGlucoseValue = newVal
-                    },
-                    label = { Text("Enter Target Glucose") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
+            TimedSettingsList { id, adding ->
+                select(id, adding)
             }
             Spacer(Modifier.padding(4.dp))
             Column {
