@@ -55,10 +55,13 @@ interface SavedFoodAccess {
 }
 
 @Dao
-interface CalendarAccess {
-    @Insert
-    suspend fun insert(entry: CalendarEntry)
+interface DoseLogAccess {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun newEntry(entry: DoseLogEntry): Long
 
     @Delete
-    suspend fun delete(entry: CalendarEntry)
+    fun removeEntry(entry: DoseLogEntry)
+
+    @Query("SELECT * FROM doseLog")
+    fun getAll(): Flow<List<DoseLogEntry>>
 }

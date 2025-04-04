@@ -15,6 +15,7 @@ import io.github.crazymisterno.GlucoseFit.data.settings.TimeConverter
 import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
 import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettingsAccess
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Qualifier
 import javax.inject.Singleton
@@ -34,14 +35,30 @@ class DateConverter {
     }
 }
 
-@Database(entities = [MealLogEntry::class, SavedFoodItem::class, FoodItem::class, TimedSettings::class], version = 1)
-@TypeConverters(DateConverter::class, TimeConverter::class)
+class DateTimeConverter {
+    private val formatter = DateTimeFormatter.ISO_DATE_TIME
+
+    @TypeConverter
+    fun fromLocalDateTime(time: LocalDateTime): String {
+        return time.format(formatter)
+    }
+
+    @TypeConverter
+    fun toLocalDateTime(string: String): LocalDateTime {
+        return string.let { str -> LocalDateTime.parse(str, formatter) }
+    }
+}
+
+@Database(entities = [MealLogEntry::class, SavedFoodItem::class, FoodItem::class, TimedSettings::class, DoseLogEntry::class], version = 1)
+@TypeConverters(DateConverter::class, TimeConverter::class, DateTimeConverter::class)
 abstract class DataManager : RoomDatabase() {
     abstract fun mealAccess(): MealAccess
 
     abstract fun savedFoodAccess(): SavedFoodAccess
 
     abstract fun timedSettingAccess(): TimedSettingsAccess
+
+    abstract fun doseLogAccess(): DoseLogAccess
 }
 
 @Qualifier

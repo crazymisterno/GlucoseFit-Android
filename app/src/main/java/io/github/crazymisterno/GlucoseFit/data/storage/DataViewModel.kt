@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -182,6 +183,12 @@ class DataViewModel @Inject constructor(
     fun updateSetting(settings: TimedSettings) {
         viewModelScope.launch {
             database.timedSettingAccess().changeConfig(settings)
+        }
+    }
+
+    fun logDose(units: Double) {
+        viewModelScope.launch {
+            database.doseLogAccess().newEntry(DoseLogEntry(LocalDateTime.now(), units))
         }
     }
 }

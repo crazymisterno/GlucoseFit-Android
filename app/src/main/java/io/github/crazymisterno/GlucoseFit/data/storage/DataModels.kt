@@ -7,6 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Entity(tableName = "meals")
 data class MealLogEntry(
@@ -42,13 +43,11 @@ data class SavedFoodItem(
     val calories: Double
 )
 
-@Entity(tableName = "calendar")
-data class CalendarEntry(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val date: LocalDate,
-    val category: String,
-    val value: Double,
-    val notes: String
+@Entity(tableName = "doseLog")
+data class DoseLogEntry(
+    val time: LocalDateTime,
+    val dose: Double,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0
 )
 
 data class MealWithFood(
