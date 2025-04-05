@@ -1,0 +1,84 @@
+package io.github.crazymisterno.GlucoseFit.ui.content
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
+import java.time.LocalDate
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
+    val focusManager = LocalFocusManager.current
+    var doseValue by remember { mutableStateOf(TextFieldValue()) }
+    val interaction = remember { MutableInteractionSource() }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Brush.horizontalGradient(listOf(
+                MaterialTheme.colorScheme.primary,
+                MaterialTheme.colorScheme.secondary
+            )))
+            .navigationBarsPadding()
+            .clickable(interaction, null) {
+                focusManager.clearFocus()
+            }
+    ) {
+        Text(
+            text = "Insulin Dose Log",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier
+                .padding(10.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+                .clip(RoundedCornerShape(15.dp))
+                .background(MaterialTheme.colorScheme.surface)
+        ) {
+            Text(
+                "Log a new insulin dose",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(15.dp)
+            )
+            TextField(
+                value = doseValue,
+                onValueChange = { doseValue = it },
+                label = { Text("Enter number of units") },
+                isError = doseValue.text.toDoubleOrNull() == null,
+                modifier = Modifier.fillMaxWidth().padding(15.dp)
+            )
+        }
+    }
+}

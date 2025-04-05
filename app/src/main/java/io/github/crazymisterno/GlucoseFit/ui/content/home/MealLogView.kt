@@ -149,7 +149,7 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
             ) {
                 Text(
                     "No food logged for this meal",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

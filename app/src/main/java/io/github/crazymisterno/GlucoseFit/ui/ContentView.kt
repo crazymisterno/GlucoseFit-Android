@@ -25,7 +25,7 @@ import java.time.LocalDate
 @Preview
 @Composable
 fun ContentView() {
-    val tabNames = listOf("Settings", "Home", "Dose Calculator", "Calendar")
+    val tabNames = listOf("Settings", "Home", "Dose Log", "Calendar")
     var pagerState = rememberPagerState(1) { tabNames.size }
     val scope = rememberCoroutineScope()
     Column {
@@ -62,7 +62,7 @@ fun ContentView() {
             when (state) {
                 0 -> SettingsNavigator()
                 1 -> HomeView(LocalDate.now())
-                2 -> DoseLog()
+                2 -> DoseLog(LocalDate.now())
                 3 -> CalendarView()
             }
         }
