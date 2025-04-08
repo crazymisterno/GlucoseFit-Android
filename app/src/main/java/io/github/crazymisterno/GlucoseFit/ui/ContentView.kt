@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.crazymisterno.GlucoseFit.ui.content.CalendarView
 import io.github.crazymisterno.GlucoseFit.ui.content.DoseLog
+import io.github.crazymisterno.GlucoseFit.ui.content.calendar.CalendarNavigator
 import io.github.crazymisterno.GlucoseFit.ui.content.home.HomeView
 import io.github.crazymisterno.GlucoseFit.ui.content.settings.SettingsNavigator
 import kotlinx.coroutines.launch
@@ -63,7 +63,7 @@ fun ContentView() {
                 0 -> SettingsNavigator()
                 1 -> HomeView(LocalDate.now())
                 2 -> DoseLog(LocalDate.now())
-                3 -> CalendarView()
+                3 -> CalendarNavigator()
             }
         }
     }
