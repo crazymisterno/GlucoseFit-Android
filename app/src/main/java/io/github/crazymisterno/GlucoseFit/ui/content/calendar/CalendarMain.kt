@@ -1,7 +1,5 @@
 package io.github.crazymisterno.GlucoseFit.ui.content.calendar
 
-import android.widget.DatePicker
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -11,11 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,9 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import java.time.format.DateTimeFormatter
-import io.github.crazymisterno.GlucoseFit.R
 import io.github.crazymisterno.GlucoseFit.ui.theme.datePickerColors
 import java.time.Instant
 import java.time.ZoneId
@@ -38,7 +31,6 @@ import java.time.ZoneOffset
 @Composable
 fun CalendarMain(navigate: (Int, Int, Int) -> Unit) {
     var state = rememberDatePickerState()
-    val formatter = DateTimeFormatter.ofPattern("LLL d, uuuu")
     Column(
         Modifier
             .fillMaxSize()
