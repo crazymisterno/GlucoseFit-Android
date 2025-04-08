@@ -32,6 +32,10 @@ interface MealAccess {
     fun getByDate(date: LocalDate): Flow<List<MealWithFood>>
 
     @Transaction
+    @Query("SELECT * FROM meals WHERE date = :date")
+    suspend fun getOnceByDate(date: LocalDate): List<MealWithFood>
+
+    @Transaction
     @Query("SELECT * FROM meals WHERE id = :id LIMIT 1")
     fun getById(id: Int): Flow<MealWithFood>
 

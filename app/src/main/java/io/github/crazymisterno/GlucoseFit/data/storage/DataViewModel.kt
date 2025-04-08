@@ -219,20 +219,10 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    fun logDose(units: Double) {
+    fun logDose(units: Double, date: LocalDate, time: LocalTime = LocalTime.now()) {
         viewModelScope.launch {
             database.doseLogAccess().newEntry(DoseLogEntry(
-                LocalDate.now(),
-                LocalTime.now(),
-                units
-            ))
-        }
-    }
-
-    fun logDose(units: Double, time: LocalTime) {
-        viewModelScope.launch {
-            database.doseLogAccess().newEntry(DoseLogEntry(
-                LocalDate.now(),
+                date,
                 time,
                 units
             ))
