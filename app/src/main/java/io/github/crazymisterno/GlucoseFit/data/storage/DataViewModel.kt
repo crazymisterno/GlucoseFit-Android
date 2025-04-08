@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -171,6 +170,15 @@ class DataViewModel @Inject constructor(
             )
     }
 
+    fun getTimeSetting(time: LocalTime): StateFlow<TimedSettings> {
+        return database.timedSettingAccess().getByTime(time)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                TimedSettings(LocalTime.now(), "", "", "")
+            )
+    }
+
     fun getAllTimeSettings(): StateFlow<List<TimedSettings>> {
         return  database.timedSettingAccess().getAll()
             .stateIn(
@@ -188,7 +196,35 @@ class DataViewModel @Inject constructor(
 
     fun logDose(units: Double) {
         viewModelScope.launch {
-            database.doseLogAccess().newEntry(DoseLogEntry(LocalDateTime.now(), units))
+            database.doseLogAccess().newEntry(DoseLogEntry(
+                LocalDate.now(),
+                LocalTime.now(),
+                units
+            ))
         }
+    }
+
+    fun removeDoseLog(log: DoseLogEntry) {
+        viewModelScope.launch {
+            database.doseLogAccess().removeEntry(log)
+        }
+    }
+
+    fun getDoseLogs(date: LocalDate): StateFlow<List<DoseLogEntry>> {
+        return database.doseLogAccess().getByDate(date)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                listOf()
+            )
+    }
+
+    fun idDoseLog(id: Int): StateFlow<DoseLogEntry> {
+        return database.doseLogAccess().getById(id)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                DoseLogEntry(LocalDate.now(), LocalTime.now(), 0.0)
+            )
     }
 }

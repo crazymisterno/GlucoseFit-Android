@@ -24,6 +24,10 @@ interface MealAccess {
     suspend fun deleteFood(food: FoodItem)
 
     @Transaction
+    @Query("SELECT * FROM meals WHERE date > :minDate")
+    fun getSinceDate(minDate: LocalDate): Flow<List<MealWithFood>>
+
+    @Transaction
     @Query("SELECT * FROM meals WHERE date = :date")
     fun getByDate(date: LocalDate): Flow<List<MealWithFood>>
 
@@ -57,11 +61,17 @@ interface SavedFoodAccess {
 @Dao
 interface DoseLogAccess {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun newEntry(entry: DoseLogEntry): Long
+    suspend fun newEntry(entry: DoseLogEntry): Long
 
     @Delete
-    fun removeEntry(entry: DoseLogEntry)
+    suspend fun removeEntry(entry: DoseLogEntry)
 
     @Query("SELECT * FROM doseLog")
     fun getAll(): Flow<List<DoseLogEntry>>
+
+    @Query("SELECT * FROM doseLog WHERE date = :date")
+    fun getByDate(date: LocalDate): Flow<List<DoseLogEntry>>
+
+    @Query("SELECT * FROM doseLog WHERE id = :id")
+    fun getById(id: Int): Flow<DoseLogEntry>
 }

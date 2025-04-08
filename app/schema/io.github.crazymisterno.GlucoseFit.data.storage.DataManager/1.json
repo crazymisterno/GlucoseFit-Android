@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9074be4b5ddf5a125f38c59e1a535218",
+    "identityHash": "8edf7a288228bbe8baa89312fc8ddf5b",
     "entities": [
       {
         "tableName": "meals",
@@ -186,8 +186,14 @@
       },
       {
         "tableName": "doseLog",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`time` TEXT NOT NULL, `dose` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `time` TEXT NOT NULL, `dose` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
           {
             "fieldPath": "time",
             "columnName": "time",
@@ -220,7 +226,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9074be4b5ddf5a125f38c59e1a535218')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8edf7a288228bbe8baa89312fc8ddf5b')"
     ]
   }
 }
