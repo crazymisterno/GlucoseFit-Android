@@ -69,7 +69,7 @@ fun HomeView(
     @PreviewParameter(PreviewDate::class) date: LocalDate,
     db: DataViewModel = hiltViewModel()
 ) {
-    val meals by db.mealsForToday.collectAsState()
+    val meals by remember { db.mealsForDay(date) }.collectAsState()
 
     db.autoPopulateMeals(date)
 
