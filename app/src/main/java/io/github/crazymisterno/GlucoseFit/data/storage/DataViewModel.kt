@@ -204,6 +204,16 @@ class DataViewModel @Inject constructor(
         }
     }
 
+    fun logDose(units: Double, time: LocalTime) {
+        viewModelScope.launch {
+            database.doseLogAccess().newEntry(DoseLogEntry(
+                LocalDate.now(),
+                time,
+                units
+            ))
+        }
+    }
+
     fun removeDoseLog(log: DoseLogEntry) {
         viewModelScope.launch {
             database.doseLogAccess().removeEntry(log)
