@@ -2,6 +2,7 @@ package io.github.crazymisterno.GlucoseFit.ui.content.settings.timed.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
     var ratioValue by remember { mutableStateOf(TextFieldValue(setting.insulinToCarbRatio)) }
     var correctionValue by remember { mutableStateOf(TextFieldValue(setting.correctionDose)) }
     var targetValue by remember { mutableStateOf(TextFieldValue(setting.targetGlucose)) }
+    val interaction = remember { MutableInteractionSource() }
 
     Box(
         Modifier
@@ -43,7 +45,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
             .padding(15.dp)
             .clip(RoundedCornerShape(15.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .clickable {
+            .clickable(interaction, null) {
                 focusManager.clearFocus()
             }
     ) {
