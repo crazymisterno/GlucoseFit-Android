@@ -276,11 +276,12 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                     .clip(RoundedCornerShape(15.dp))
                     .background(Color.Blue)
                     .clickable {
-                        if (usingCustom) {
-                            db.logDose(doseValue.text.toDouble(), time)
-                        }
-                        else {
-                            db.logDose(doseValue.text.toDouble())
+                        if (doseValue.text.toDoubleOrNull() != null) {
+                            if (usingCustom) {
+                                db.logDose(doseValue.text.toDouble(), date, time)
+                            } else {
+                                db.logDose(doseValue.text.toDouble(), date)
+                            }
                         }
                     }
             ) {
