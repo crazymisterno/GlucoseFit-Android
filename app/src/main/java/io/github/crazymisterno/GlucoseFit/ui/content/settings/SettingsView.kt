@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.ui.content.settings.timed.TimedSettingsList
+import io.github.crazymisterno.GlucoseFit.ui.theme.switchColors
+import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 
 @Composable
 fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, Boolean) -> Unit) {
@@ -94,6 +96,7 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, B
                     onCheckedChange = { newVal ->
                         viewModel.updateSettings(carbOnly = newVal)
                     },
+                    colors = switchColors()
                 )
             }
             Column {
@@ -109,7 +112,8 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, B
                     },
                     label = { Text("Enter Calories (kcal)") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = textFieldColors()
                 )
             }
             Spacer(Modifier.padding(4.dp))

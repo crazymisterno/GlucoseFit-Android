@@ -41,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.FoodItem
 import io.github.crazymisterno.GlucoseFit.data.storage.SavedFoodItem
+import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -72,6 +73,7 @@ fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), dialog: (Sav
             value = search,
             onValueChange = { search = it },
             label = { Text("Search Food") },
+            colors = textFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)

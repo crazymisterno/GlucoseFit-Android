@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
+import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 
 @Composable
 fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, String, Boolean) -> Unit) {
@@ -64,6 +65,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                 value = ratioValue,
                 onValueChange = { ratioValue = it },
                 label = { Text("Insulin to Carb Ratio") },
+                colors = textFieldColors(),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(5.dp))
@@ -71,6 +73,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                 value = correctionValue,
                 onValueChange = { correctionValue = it },
                 label = { Text("Correction Dose") },
+                colors = textFieldColors(),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(5.dp))
@@ -78,6 +81,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                 value = targetValue,
                 onValueChange = { targetValue = it },
                 label = { Text("Target Glucose") },
+                colors = textFieldColors(),
                 modifier = Modifier.fillMaxWidth()
             )
             Row(

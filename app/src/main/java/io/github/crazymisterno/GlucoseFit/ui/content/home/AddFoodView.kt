@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.FoodItem
+import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 
 @Composable
 fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> Unit) {
@@ -68,6 +69,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     nameField = it
                 },
                 label = { Text("Food Name") },
+                colors = textFieldColors(),
                 modifier = Modifier.fillMaxWidth(),
                 isError = nameField.text.isEmpty()
             )
@@ -78,6 +80,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     carbField = it
                 },
                 label = { Text("Carbs (g)") },
+                colors = textFieldColors(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 isError = carbField.text.toDoubleOrNull() == null
             )
@@ -88,6 +91,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     calField = it
                 },
                 label = { Text("Calories") },
+                colors = textFieldColors(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 isError = calField.text.toDoubleOrNull() == null
             )

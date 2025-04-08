@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
+import io.github.crazymisterno.GlucoseFit.ui.theme.timePickerColors
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +58,10 @@ fun TimedSettingsClock(setting: TimedSettings, action: (Int, LocalTime) -> Unit)
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(20.dp))
-            TimePicker(value)
+            TimePicker(
+                state = value,
+                colors = timePickerColors()
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

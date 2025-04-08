@@ -44,6 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
+import io.github.crazymisterno.GlucoseFit.ui.theme.switchColors
+import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
+import io.github.crazymisterno.GlucoseFit.ui.theme.timePickerColors
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -179,6 +182,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                 value = doseValue,
                 onValueChange = { doseValue = it },
                 label = { Text("Enter number of units") },
+                colors = textFieldColors(),
                 isError = doseValue.text.toDoubleOrNull() == null,
                 modifier = Modifier.fillMaxWidth().padding(15.dp)
             )
@@ -200,7 +204,8 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                         checked = usingCustom,
                         onCheckedChange = {
                             usingCustom = it
-                        }
+                        },
+                        colors = switchColors()
                     )
                     if (usingCustom) {
                         Spacer(Modifier.width(10.dp))
@@ -235,7 +240,8 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                         TimePicker(
                             state = timeState,
                             modifier = Modifier
-                                .padding(15.dp)
+                                .padding(15.dp),
+                            colors = timePickerColors()
                         )
                         Row(
                             Modifier
