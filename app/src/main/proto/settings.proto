@@ -4,34 +4,6 @@ option java_package = "io.github.crazymisterno.GlucoseFit.data.proto";
 option java_multiple_files = true;
 
 message Settings {
-  string weight = 1;
-  string heightFeet = 2;
-  string heightInches = 3;
-  string age = 4;
-  GenderOption gender = 5;
-  ActivityLevel activityLevel = 6;
-  Goal goal = 7;
   string manualCalories = 8;
-  string insulinToCarbRatio = 9;
-  string correctionDose = 10;
-  string targetGlucose = 11;
   bool carbOnly = 12;
-}
-
-enum GenderOption {
-  Male = 0;
-  Female = 1;
-}
-
-enum ActivityLevel {
-  Sedentary = 0;
-  LightlyActive = 1;
-  Active = 2;
-  VeryActive = 3;
-}
-
-enum Goal {
-  Maintain = 0;
-  GainOne = 1;
-  LoseOne = 2;
 }

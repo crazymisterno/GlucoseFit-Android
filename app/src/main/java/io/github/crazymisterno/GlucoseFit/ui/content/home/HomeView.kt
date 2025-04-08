@@ -160,7 +160,7 @@ fun HomeRoot(
             currentCals += item.calories.toInt()
         }
     }
-    val finalCals = settings.finalCalories
+    val finalCals = settings.settings.collectAsState().value.manualCalories.toDoubleOrNull() ?: 0.0
 
     Column(modifier = Modifier
         .background(Brush.horizontalGradient(listOf(

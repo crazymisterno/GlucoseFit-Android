@@ -35,13 +35,26 @@ interface TimedSettingsAccess {
     @Query("SELECT * FROM timedSettings")
     fun getAll(): Flow<List<TimedSettings>>
 
-    @Query("SELECT * FROM timedSettings WHERE startTime < current_time LIMIT 1")
+    @Query("""
+        SELECT * FROM timedSettings 
+        WHERE startTime <= current_time
+        ORDER BY startTime DESC
+        LIMIT 1
+    """)
     fun getCurrentSetting(): Flow<TimedSettings>
+
+    @Query("""
+        SELECT * FROM timedSettings
+        WHERE startTime <= :time
+        ORDER BY startTime DESC
+        LIMIT 1
+    """)
+    fun getByTime(time: LocalTime): Flow<TimedSettings>
 
     @Update
     suspend fun changeConfig(settings: TimedSettings)
 
-    @Query("SELECT * FROM timedSettings WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM timedSettings WHERE id = :id")
     fun getById(id: Int): Flow<TimedSettings>
 }
 
