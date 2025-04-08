@@ -33,6 +33,31 @@ class DataViewModel @Inject constructor(
             listOf()
         )
 
+    fun autoPopulateMeals(date: LocalDate) {
+        viewModelScope.launch {
+            val meals = database.mealAccess().getOnceByDate(date)
+            if (meals.isEmpty()) {
+                val breakfast = MealLogEntry(
+                    name = "Breakfast",
+                    date = date
+                )
+                val lunch = MealLogEntry(
+                    name = "Lunch",
+                    date = date
+                )
+                val dinner = MealLogEntry(
+                    name = "Dinner",
+                    date = date
+                )
+                val snack = MealLogEntry(
+                    name = "Snack",
+                    date = date
+                )
+                insertBlankMeals(breakfast, lunch, dinner, snack)
+            }
+        }
+    }
+
     fun mealsForDay(date: LocalDate): StateFlow<List<MealWithFood>> {
         return database.mealAccess().getByDate(date)
             .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())

@@ -35,7 +35,6 @@ import androidx.navigation.createGraph
 import androidx.navigation.toRoute
 import com.zedalpha.shadowgadgets.compose.clippedShadow
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
-import io.github.crazymisterno.GlucoseFit.data.storage.MealLogEntry
 import io.github.crazymisterno.GlucoseFit.data.storage.MealWithFood
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.dev.PreviewDate
@@ -72,25 +71,7 @@ fun HomeView(
 ) {
     val meals by db.mealsForToday.collectAsState()
 
-    if (meals.isEmpty()) {
-        val breakfast = MealLogEntry(
-            name = "Breakfast",
-            date = date
-        )
-        val lunch = MealLogEntry(
-            name = "Lunch",
-            date = date
-        )
-        val dinner = MealLogEntry(
-            name = "Dinner",
-            date = date
-        )
-        val snack = MealLogEntry(
-            name = "Snack",
-            date = date
-        )
-        db.insertBlankMeals(breakfast, lunch, dinner, snack)
-    }
+    db.autoPopulateMeals(date)
 
     var calories = 0
     meals.forEach { meal ->
