@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +33,7 @@ import java.time.ZoneOffset
 @Composable
 fun CalendarMain(navigate: (Int, Int, Int) -> Unit) {
     var state = rememberDatePickerState()
+    var scroll = rememberScrollState()
     Column(
         Modifier
             .fillMaxSize()
@@ -38,6 +41,7 @@ fun CalendarMain(navigate: (Int, Int, Int) -> Unit) {
                 MaterialTheme.colorScheme.primary,
                 MaterialTheme.colorScheme.secondary
             )))
+            .verticalScroll(scroll)
     ) {
         Text(
             text = "Calendar",
