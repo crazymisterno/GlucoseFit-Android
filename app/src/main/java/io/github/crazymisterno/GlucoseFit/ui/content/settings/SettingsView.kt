@@ -37,6 +37,7 @@ import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.ui.content.settings.timed.TimedSettingsList
 import io.github.crazymisterno.GlucoseFit.ui.theme.switchColors
 import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -48,6 +49,7 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, B
 
     LaunchedEffect(settings.value.manualCalories) {
         scope.launch {
+            delay(500)
             viewModel.manualCaloriesValue = TextFieldValue(
                 settings.value.manualCalories
             )
