@@ -61,6 +61,7 @@ class SettingsDataProvider @Inject constructor(
     override suspend fun updateSettings(
         manualCalories: String?,
         carbOnly: Boolean?,
+        setupComplete: Boolean?
     ) {
         dataStore.updateData { preferences ->
             var builder = preferences.toBuilder()
@@ -68,6 +69,8 @@ class SettingsDataProvider @Inject constructor(
                 builder.setManualCalories(manualCalories)
             if (carbOnly != null)
                 builder.setCarbOnly(carbOnly)
+            if (setupComplete != null)
+                builder.setSetUpComplete(setupComplete)
             builder.build()
         }
     }
@@ -79,5 +82,6 @@ interface SettingsProvider {
     suspend fun updateSettings(
         manualCalories: String? = null,
         carbOnly: Boolean? = null,
+        setupComplete: Boolean? = null
     )
 }

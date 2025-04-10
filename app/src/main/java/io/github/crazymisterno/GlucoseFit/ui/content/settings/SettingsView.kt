@@ -21,25 +21,38 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.ui.content.settings.timed.TimedSettingsList
 import io.github.crazymisterno.GlucoseFit.ui.theme.switchColors
 import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, Boolean) -> Unit) {
     val settings = viewModel.settings.collectAsState()
     val interaction = remember { MutableInteractionSource() }
     val focusManager = LocalFocusManager.current
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(settings.value.manualCalories) {
+        scope.launch {
+            viewModel.manualCaloriesValue = TextFieldValue(
+                settings.value.manualCalories
+            )
+        }
+    }
 
     Column(
         Modifier

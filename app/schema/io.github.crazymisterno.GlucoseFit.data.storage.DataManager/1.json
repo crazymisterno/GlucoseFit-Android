@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8edf7a288228bbe8baa89312fc8ddf5b",
+    "identityHash": "acb3c7e084184a2c724e5e99d7f1e72b",
     "entities": [
       {
         "tableName": "meals",
@@ -142,12 +142,12 @@
       },
       {
         "tableName": "timedSettings",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`startTime` TEXT NOT NULL, `insulinToCarbRatio` TEXT NOT NULL, `correctionDose` TEXT NOT NULL, `targetGlucose` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`startTime` INTEGER NOT NULL, `insulinToCarbRatio` TEXT NOT NULL, `correctionDose` TEXT NOT NULL, `targetGlucose` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
           {
             "fieldPath": "startTime",
             "columnName": "startTime",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -186,7 +186,7 @@
       },
       {
         "tableName": "doseLog",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `time` TEXT NOT NULL, `dose` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `time` INTEGER NOT NULL, `dose` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
           {
             "fieldPath": "date",
@@ -197,7 +197,7 @@
           {
             "fieldPath": "time",
             "columnName": "time",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -226,7 +226,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8edf7a288228bbe8baa89312fc8ddf5b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'acb3c7e084184a2c724e5e99d7f1e72b')"
     ]
   }
 }

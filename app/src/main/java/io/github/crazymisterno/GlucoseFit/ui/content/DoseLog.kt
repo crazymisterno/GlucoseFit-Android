@@ -1,6 +1,7 @@
 package io.github.crazymisterno.GlucoseFit.ui.content
 
 import android.text.format.DateFormat
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -54,11 +55,12 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
+    Log.println(Log.INFO, "Message", "Recomposing Dose log")
     val focusManager = LocalFocusManager.current
     var doseValue by remember { mutableStateOf(TextFieldValue()) }
     val interaction = remember { MutableInteractionSource() }
     val logs by db.getDoseLogs(date).collectAsState()
-    val currentSettings by remember { db.getTimeSetting() }.collectAsState()
+    val currentSettings by db.getTimeSetting().collectAsState()
     var usingCustom by remember { mutableStateOf(false) }
     var dropDown by remember { mutableStateOf(false) }
     var timeState = rememberTimePickerState()
@@ -120,7 +122,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "1:${currentSettings.insulinToCarbRatio}",
+                            "1:${currentSettings!!.insulinToCarbRatio}",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -134,7 +136,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "1:${currentSettings.correctionDose}",
+                            "1:${currentSettings!!.correctionDose}",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -148,7 +150,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "${currentSettings.targetGlucose} mg/dL",
+                            "${currentSettings!!.targetGlucose} mg/dL",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface

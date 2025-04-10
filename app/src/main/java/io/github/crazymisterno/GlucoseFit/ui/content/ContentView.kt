@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit.ui
+package io.github.crazymisterno.GlucoseFit.ui.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.crazymisterno.GlucoseFit.ui.content.DoseLog
 import io.github.crazymisterno.GlucoseFit.ui.content.calendar.CalendarNavigator
 import io.github.crazymisterno.GlucoseFit.ui.content.home.HomeView
 import io.github.crazymisterno.GlucoseFit.ui.content.settings.SettingsNavigator

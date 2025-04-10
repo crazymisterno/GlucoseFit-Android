@@ -115,19 +115,19 @@ data class DoseLogEntry(
                 Column {
                     if (timedSetting != null) {
                         Text(
-                            "Insulin ratio: 1:${timedSetting.insulinToCarbRatio}",
+                            "Insulin ratio: 1:${timedSetting!!.insulinToCarbRatio}",
                             modifier = Modifier
                                 .padding(5.dp),
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "Correction dose: 1:${timedSetting.correctionDose}",
+                            "Correction dose: 1:${timedSetting!!.correctionDose}",
                             modifier = Modifier
                                 .padding(5.dp),
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "Target Glucose: ${timedSetting.targetGlucose}",
+                            "Target Glucose: ${timedSetting!!.targetGlucose}",
                             modifier = Modifier
                                 .padding(5.dp),
                             color = MaterialTheme.colorScheme.onSurface

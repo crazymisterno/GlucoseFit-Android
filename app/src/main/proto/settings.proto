@@ -4,6 +4,7 @@ option java_package = "io.github.crazymisterno.GlucoseFit.data.proto";
 option java_multiple_files = true;
 
 message Settings {
-  string manualCalories = 8;
-  bool carbOnly = 12;
+  string manualCalories = 1;
+  bool carbOnly = 2;
+  bool setUpComplete = 3;
 }

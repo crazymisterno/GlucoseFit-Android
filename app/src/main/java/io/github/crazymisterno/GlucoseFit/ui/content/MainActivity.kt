@@ -1,4 +1,4 @@
-package io.github.crazymisterno.GlucoseFit
+package io.github.crazymisterno.GlucoseFit.ui.content
 
 import android.app.Application
 import android.os.Bundle
@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
-import io.github.crazymisterno.GlucoseFit.ui.ContentView
 import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
 
 @HiltAndroidApp

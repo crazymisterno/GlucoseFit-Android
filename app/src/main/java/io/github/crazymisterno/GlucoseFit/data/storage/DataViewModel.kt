@@ -1,5 +1,6 @@
 package io.github.crazymisterno.GlucoseFit.data.storage
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -177,8 +178,9 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    fun getTimeSetting(): StateFlow<TimedSettings> {
-        return database.timedSettingAccess().getCurrentSetting()
+    fun getTimeSetting(): StateFlow<TimedSettings?> {
+        Log.println(Log.INFO, "Message", "Rerunning query")
+        return database.timedSettingAccess().findActive(LocalTime.now())
             .stateIn(
                 viewModelScope,
                 SharingStarted.Eagerly,
@@ -195,8 +197,9 @@ class DataViewModel @Inject constructor(
             )
     }
 
-    fun getTimeSetting(time: LocalTime): StateFlow<TimedSettings> {
-        return database.timedSettingAccess().getByTime(time)
+    fun getTimeSetting(time: LocalTime): StateFlow<TimedSettings?> {
+        Log.println(Log.INFO, "Message", "Rerunning query")
+        return database.timedSettingAccess().findActive(time)
             .stateIn(
                 viewModelScope,
                 SharingStarted.Eagerly,
@@ -211,6 +214,10 @@ class DataViewModel @Inject constructor(
                 SharingStarted.Eagerly,
                 listOf()
             )
+    }
+
+    suspend fun readTimeSettingsOnce(): List<TimedSettings> {
+        return database.timedSettingAccess().checkOnce()
     }
 
     fun updateSetting(settings: TimedSettings) {

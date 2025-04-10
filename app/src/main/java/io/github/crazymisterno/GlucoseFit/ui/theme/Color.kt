@@ -1,6 +1,7 @@
 package io.github.crazymisterno.GlucoseFit.ui.theme
 
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -153,5 +154,15 @@ fun switchColors(): SwitchColors {
         disabledUncheckedThumbColor = Color.DarkGray,
         disabledUncheckedTrackColor = Color.LightGray,
         disabledUncheckedBorderColor = Color.DarkGray
+    )
+}
+
+@Composable
+fun buttonColors(): ButtonColors {
+    return ButtonColors(
+        containerColor = LightBgBlue,
+        contentColor = DarkBgGreen,
+        disabledContainerColor = Color.Gray,
+        disabledContentColor = Color.White
     )
 }

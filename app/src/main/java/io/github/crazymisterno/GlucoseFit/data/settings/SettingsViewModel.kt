@@ -32,11 +32,13 @@ class SettingsViewModel @Inject constructor(
     fun updateSettings(
         manualCalories: String? = null,
         carbOnly: Boolean? = null,
+        setupFinished: Boolean? = null
     ) {
         viewModelScope.launch {
             provider.updateSettings(
                 manualCalories = manualCalories,
                 carbOnly = carbOnly,
+                setupComplete = setupFinished
             )
         }
     }

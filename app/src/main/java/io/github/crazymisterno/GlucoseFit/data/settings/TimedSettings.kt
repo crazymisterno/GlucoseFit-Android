@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.TypeConverter
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -35,6 +36,9 @@ interface TimedSettingsAccess {
     @Query("SELECT * FROM timedSettings")
     fun getAll(): Flow<List<TimedSettings>>
 
+    @Query("SELECT * FROM timedSettings")
+    suspend fun checkOnce(): List<TimedSettings>
+
     @Query("""
         SELECT * FROM timedSettings 
         WHERE startTime <= current_time
@@ -49,7 +53,26 @@ interface TimedSettingsAccess {
         ORDER BY startTime DESC
         LIMIT 1
     """)
-    fun getByTime(time: LocalTime): Flow<TimedSettings>
+    suspend fun getByTime(time: LocalTime): TimedSettings?
+
+    @Query("""
+        SELECT * FROM timedSettings
+        ORDER BY startTime DESC
+        LIMIT 1
+    """)
+    suspend fun getLastSetting(): TimedSettings?
+
+    fun findActive(time: LocalTime): Flow<TimedSettings?> {
+        return flow {
+            val firstQuery = getByTime(time)
+            if (firstQuery == null) {
+                emit(getLastSetting())
+            }
+            else {
+                emit(firstQuery)
+            }
+        }
+    }
 
     @Update
     suspend fun changeConfig(settings: TimedSettings)
@@ -59,14 +82,13 @@ interface TimedSettingsAccess {
 }
 
 class TimeConverter {
-    private val formatter = DateTimeFormatter.ISO_TIME
     @TypeConverter
-    fun fromLocalTime(time: LocalTime): String {
-        return time.format(formatter)
+    fun fromLocalTime(time: LocalTime): Int {
+        return time.toSecondOfDay()
     }
 
     @TypeConverter
-    fun toLocalTime(string: String): LocalTime {
-        return LocalTime.parse(string, formatter)
+    fun toLocalTime(second: Int): LocalTime {
+        return LocalTime.ofSecondOfDay(second.toLong())
     }
 }
