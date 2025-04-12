@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -19,7 +18,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -69,6 +70,7 @@ class OnBoarding : ComponentActivity() {
 @Composable
 fun OnBoardingMain(done: () -> Unit) {
     var step by remember { mutableIntStateOf(0) }
+    val scroll = rememberScrollState()
 
     Column(
         Modifier
@@ -85,7 +87,8 @@ fun OnBoardingMain(done: () -> Unit) {
                 .fillMaxWidth()
                 .padding(15.dp)
                 .clip(RoundedCornerShape(15.dp))
-                .background(MaterialTheme.colorScheme.surface),
+                .background(MaterialTheme.colorScheme.surface)
+                .verticalScroll(scroll),
             transitionSpec = {
                 (fadeIn(tween(200)) + expandVertically(tween(200))) togetherWith
                         (fadeOut(tween(200)) + shrinkVertically(tween(200)))

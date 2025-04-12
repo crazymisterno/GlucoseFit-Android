@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp") version "2.1.10-1.0.31"
-    id("androidx.room") version "2.6.1"
+    id("androidx.room") version "2.7.0"
     id("com.google.protobuf") version "0.9.4"
     kotlin("plugin.serialization") version "2.0.21"
     id("com.google.dagger.hilt.android")
@@ -148,6 +148,7 @@ dependencies {
 
     // For Jetpack Compose integration (if using Compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.core.splashscreen)
 }
 
 configurations {
