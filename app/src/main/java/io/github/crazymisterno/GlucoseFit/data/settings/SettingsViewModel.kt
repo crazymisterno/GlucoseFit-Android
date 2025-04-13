@@ -21,6 +21,14 @@ class SettingsViewModel @Inject constructor(
     private val provider: SettingsProvider
 ) : ViewModel() {
 
+    init {
+        viewModelScope.launch {
+            provider.shared
+                .map { it.manualCalories }
+                .collect { manualCaloriesValue = TextFieldValue(it) }
+        }
+    }
+
     val settings: StateFlow<Settings> = provider.shared.map { preferences ->
         preferences
     }.stateIn(
