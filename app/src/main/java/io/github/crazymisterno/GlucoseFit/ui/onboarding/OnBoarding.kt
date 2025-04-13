@@ -46,8 +46,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OnBoarding : ComponentActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

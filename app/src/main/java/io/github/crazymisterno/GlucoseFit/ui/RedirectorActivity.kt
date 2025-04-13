@@ -18,7 +18,7 @@ import io.github.crazymisterno.GlucoseFit.ui.content.MainActivity
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.OnBoarding
 import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,26 +30,37 @@ class RedirectorActivity : ComponentActivity() {
             val setting: SettingsViewModel = hiltViewModel()
             LaunchedEffect(Unit) {
                 lifecycleScope.launch {
-                    delay(500)
-                    val initSettings = setting.settings.value.setUpComplete
+                    setting.settings
+                        .map { it.setUpComplete }
+                        .collect {
+                            val activity = if (it) {
+                                MainActivity::class.java
+                            } else {
+                                OnBoarding::class.java
+                            }
 
-                    val activity = if (initSettings) {
-                        MainActivity::class.java
-                    } else {
-                        OnBoarding::class.java
-                    }
-
-                    startActivity(Intent(this@RedirectorActivity, activity))
+                            startActivity(Intent(this@RedirectorActivity, activity))
+                            finish()
+                        }
                 }
             }
             GlucoseFitMaterialTheme {
-                Box(
-                    Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(
+                Box(Modifier
+                    .fillMaxSize()
+                    .background(Brush.horizontalGradient(listOf(
                         MaterialTheme.colorScheme.primary,
                         MaterialTheme.colorScheme.secondary
                     )))
                 )
             }
         }
+    }
+}
+
+class SplashActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startActivity(Intent(this, RedirectorActivity::class.java))
+        finish()
     }
 }
