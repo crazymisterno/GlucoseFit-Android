@@ -2,7 +2,6 @@ package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,19 +14,20 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -163,60 +163,30 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
                 modifier = Modifier
                     .padding(horizontal = 15.dp)
                     .padding(bottom = 15.dp)
+                    .clip(RoundedCornerShape(15.dp))
             ) {
-                items(list, { food -> food.id }) { item ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 15.dp)
-                            .padding(vertical = 10.dp)
-                            .clip(RoundedCornerShape(15.dp))
-                            .background(MaterialTheme.colorScheme.surface),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(
-                            Modifier
-                                .padding(10.dp),
-                            verticalArrangement = Arrangement.SpaceAround
-                        ) {
-                            Text(
-                                item.name,
-                                style = MaterialTheme.typography.headlineSmall,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                item.carbs.toString() + "g carbs, " +
-                                        item.calories + " cal",
-                                style = MaterialTheme.typography.headlineSmall,
-                                color = Color.Gray
-                            )
+                itemsIndexed(list) { index, item ->
+                    ListItem(
+                        headlineContent = { Text(item.name) },
+                        supportingContent = { Text("${item.carbs}g carbs, ${item.calories} cal") },
+                        trailingContent = {
+                            Row {
+                                Icon(
+                                    Icons.Filled.Delete,
+                                    "Delete item",
+                                    tint = Color.Red,
+                                )
+                                Spacer(Modifier.width(5.dp))
+                                Icon(
+                                    Icons.Filled.AddCircle,
+                                    "Save item",
+                                    tint = Color.Green,
+                                )
+                            }
                         }
-                        Row(
-                            Modifier
-                                .padding(10.dp)
-                        ) {
-                            Icon(
-                                Icons.Filled.Delete,
-                                contentDescription = "Delete Button",
-                                tint = Color.Red,
-                                modifier = Modifier
-                                    .clickable {
-                                        db.deleteFood(item)
-                                    }
-                            )
-                            Spacer(Modifier.width(5.dp))
-                            Icon(
-                                Icons.Filled.AddCircle,
-                                contentDescription = "Save Button",
-                                tint = Color.Green,
-                                modifier = Modifier
-                                    .clickable {
-                                        db.saveFood(item)
-                                    }
-                            )
-                        }
-                    }
+                    )
+                    if (index < list.size - 1)
+                        HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
                 }
             }
         }

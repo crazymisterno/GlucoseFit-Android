@@ -15,9 +15,10 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -298,11 +299,16 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
             }
         }
 
-        LazyColumn {
-            items(logs, key = { it.id }) {
-                it.Display {
-                    db.removeDoseLog(it)
-                }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+                .clip(RoundedCornerShape(15.dp))
+        ) {
+            itemsIndexed(logs) { index, item ->
+                item.Display()
+                if (index < logs.size - 1)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
             }
         }
     }
