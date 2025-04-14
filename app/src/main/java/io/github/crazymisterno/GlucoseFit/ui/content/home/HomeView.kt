@@ -2,6 +2,7 @@ package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,9 +17,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
@@ -38,6 +42,7 @@ import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.MealWithFood
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.dev.PreviewDate
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -67,11 +72,21 @@ data class SavedOptions(
 @Composable
 fun HomeView(
     @PreviewParameter(PreviewDate::class) date: LocalDate,
-    db: DataViewModel = hiltViewModel()
+    db: DataViewModel = hiltViewModel(),
+    settings: SettingsViewModel = hiltViewModel()
 ) {
     val meals by remember { db.mealsForDay(date) }.collectAsState()
+    var carbOnly: Boolean? by remember { mutableStateOf(null) }
 
     db.autoPopulateMeals(date)
+
+    LaunchedEffect(Unit) {
+        settings.settings
+            .map { it.carbOnly }
+            .collect {
+                carbOnly = it
+            }
+    }
 
     var calories = 0
     meals.forEach { meal ->
@@ -85,8 +100,20 @@ fun HomeView(
         navigator.createGraph(startDestination = Home
         ) {
             composable<Home> {
-                HomeRoot(date, meals) { id ->
-                    navigator.navigate(Meal(id))
+                when (carbOnly) {
+                    true -> CarbHomeRoot(date, meals) {
+                        navigator.navigate(Meal(id))
+                    }
+                    false -> HomeRoot(date, meals) { id ->
+                        navigator.navigate(Meal(id))
+                    }
+                    null -> Box(Modifier
+                        .fillMaxSize()
+                        .background(Brush.horizontalGradient(listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.secondary
+                        )))
+                    )
                 }
             }
             composable<Meal> { entry ->
