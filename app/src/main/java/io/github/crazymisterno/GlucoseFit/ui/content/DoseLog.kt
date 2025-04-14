@@ -60,7 +60,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
     val focusManager = LocalFocusManager.current
     var doseValue by remember { mutableStateOf(TextFieldValue()) }
     val interaction = remember { MutableInteractionSource() }
-    val logs by db.getDoseLogs(date).collectAsState()
+    val logs by remember { db.getDoseLogs(date) }.collectAsState()
     val currentSettings by db.getTimeSetting().collectAsState()
     var usingCustom by remember { mutableStateOf(false) }
     var dropDown by remember { mutableStateOf(false) }
