@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -18,13 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
-    @InMemoryDb
+    @InStorageDb
     private val database: DataManager
 ): ViewModel() {
     val mealsForToday: StateFlow<List<MealWithFood>> =
-        database.mealAccess().getByDate(LocalDate.now()).map { data ->
-            data
-        }.stateIn(viewModelScope, SharingStarted.Lazily, listOf())
+        database.mealAccess()
+            .getByDate(LocalDate.now())
+            .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
 
     val savedFood: StateFlow<List<SavedFoodItem>> = database.savedFoodAccess().getAll()
