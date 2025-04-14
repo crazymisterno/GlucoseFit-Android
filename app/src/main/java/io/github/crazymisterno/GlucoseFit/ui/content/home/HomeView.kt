@@ -229,6 +229,17 @@ fun HomeRoot(
         LazyColumn(
             Modifier.fillMaxHeight()
         ) {
+            if (mealList.isEmpty()) {
+                item {
+                    Text(
+                        "Loading...",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
             items(mealList, key = {meal -> meal.meal.id}) { meal ->
                 MealSection(meal) {
                     navigate(meal.meal.id)
