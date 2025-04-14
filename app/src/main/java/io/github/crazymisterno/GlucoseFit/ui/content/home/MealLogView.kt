@@ -175,12 +175,20 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
                                     Icons.Filled.Delete,
                                     "Delete item",
                                     tint = Color.Red,
+                                    modifier = Modifier
+                                        .clickable {
+                                            db.deleteFood(item)
+                                        }
                                 )
                                 Spacer(Modifier.width(5.dp))
                                 Icon(
                                     Icons.Filled.AddCircle,
                                     "Save item",
                                     tint = Color.Green,
+                                    modifier = Modifier
+                                        .clickable {
+                                            db.saveFood(item)
+                                        }
                                 )
                             }
                         }
