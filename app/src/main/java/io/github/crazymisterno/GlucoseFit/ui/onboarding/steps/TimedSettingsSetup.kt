@@ -5,11 +5,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,6 +44,7 @@ data class Details(
 
 @Composable
 fun TimedSettingsSetup(db: DataViewModel = hiltViewModel(), moveOn: () -> Unit) {
+    var errorAlert by remember { mutableStateOf(false) }
     val navigator = rememberNavController()
     val scope = rememberCoroutineScope()
     val graph = navigator.createGraph(startDestination = SetupMenu) {
@@ -61,6 +68,8 @@ fun TimedSettingsSetup(db: DataViewModel = hiltViewModel(), moveOn: () -> Unit) 
                             val list = db.readTimeSettingsOnce()
                             if (list.isNotEmpty())
                                 moveOn()
+                            else
+                                errorAlert = true
                         }
                     },
                     modifier = Modifier
@@ -90,4 +99,22 @@ fun TimedSettingsSetup(db: DataViewModel = hiltViewModel(), moveOn: () -> Unit) 
         }
     }
     NavHost(navigator, graph)
+
+    if (errorAlert)
+        AlertDialog(
+            onDismissRequest = { errorAlert = false },
+            confirmButton = {
+                TextButton(onClick = { errorAlert = false }) {
+                    Text(
+                        "Ok",
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            },
+            title = { Text("No timed settings") },
+            text = { Text("Please configure at least one timed setting") },
+            containerColor = MaterialTheme.colorScheme.surface,
+            textContentColor = MaterialTheme.colorScheme.onSurface,
+            titleContentColor = MaterialTheme.colorScheme.onSurface
+        )
 }

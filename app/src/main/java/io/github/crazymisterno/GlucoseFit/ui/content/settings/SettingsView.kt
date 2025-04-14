@@ -113,7 +113,8 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, B
                     label = { Text("Enter Calories (kcal)") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
-                    colors = textFieldColors()
+                    colors = textFieldColors(),
+                    isError = viewModel.manualCaloriesValue.text.toDoubleOrNull() == null
                 )
             }
             Spacer(Modifier.padding(4.dp))

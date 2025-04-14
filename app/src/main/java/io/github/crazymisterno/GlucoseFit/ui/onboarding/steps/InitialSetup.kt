@@ -9,15 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -34,6 +38,7 @@ import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 fun InitalSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Unit) {
     val settingsState by settings.settings.collectAsState()
     val interaction = remember { MutableInteractionSource() }
+    var errorAlert by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     Column(
@@ -88,7 +93,8 @@ fun InitalSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Uni
                 label = { Text("Enter Calories (kcal)") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
-                colors = textFieldColors()
+                colors = textFieldColors(),
+                isError = settings.manualCaloriesValue.text.toDoubleOrNull() == null
             )
         }
 
@@ -101,6 +107,7 @@ fun InitalSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Uni
                     )
                     moveOn()
                 }
+                else errorAlert = true
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -110,5 +117,22 @@ fun InitalSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Uni
         ) {
             Text("Confirm")
         }
+        if (errorAlert)
+            AlertDialog(
+                onDismissRequest = { errorAlert = false },
+                confirmButton = {
+                    TextButton(onClick = { errorAlert = false }) {
+                        Text(
+                            "Ok",
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                title = { Text("Invalid calorie goal input") },
+                text = { Text("Calorie goal must be a valid number") },
+                containerColor = MaterialTheme.colorScheme.surface,
+                textContentColor = MaterialTheme.colorScheme.onSurface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface
+            )
     }
 }

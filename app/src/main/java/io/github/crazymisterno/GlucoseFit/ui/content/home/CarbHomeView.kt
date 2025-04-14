@@ -32,7 +32,6 @@ import java.util.Locale
 fun CarbHomeRoot(
     date: LocalDate,
     mealList: List<MealWithFood>,
-    settings: SettingsViewModel = hiltViewModel(),
     navigate: (Int) -> Unit
 ) {
     var carbs = 0.0

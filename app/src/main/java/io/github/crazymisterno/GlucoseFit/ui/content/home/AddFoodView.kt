@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +42,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
     var calField by  remember { mutableStateOf(TextFieldValue()) }
     val focusManager = LocalFocusManager.current
     val interaction = remember { MutableInteractionSource() }
+    var errorAlert by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,7 +74,6 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 label = { Text("Food Name") },
                 colors = textFieldColors(),
                 modifier = Modifier.fillMaxWidth(),
-                isError = nameField.text.isEmpty()
             )
             Spacer(Modifier.height(15.dp))
             TextField(
@@ -82,7 +84,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 label = { Text("Carbs (g)") },
                 colors = textFieldColors(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                isError = carbField.text.toDoubleOrNull() == null
+                isError = carbField.text.toDoubleOrNull() == null && carbField.text.isNotEmpty()
             )
             Spacer(Modifier.height(15.dp))
             TextField(
@@ -93,7 +95,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 label = { Text("Calories") },
                 colors = textFieldColors(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                isError = calField.text.toDoubleOrNull() == null
+                isError = calField.text.toDoubleOrNull() == null && calField.text.isNotEmpty()
             )
             Spacer(Modifier.padding(15.dp))
             Box(
@@ -102,14 +104,23 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     .clip(RoundedCornerShape(15.dp))
                     .background(Color.Green)
                     .clickable {
-                        val food = FoodItem(
-                            mealId = mealId,
-                            name = nameField.text,
-                            carbs = carbField.text.toDoubleOrNull() ?: 0.0,
-                            calories = calField.text.toDoubleOrNull() ?: 0.0
-                        )
-                        db.addFood(food)
-                        close()
+                        if (
+                            nameField.text.isEmpty() ||
+                            carbField.text.toDoubleOrNull() == null ||
+                            calField.text.toDoubleOrNull() == null
+                        ) {
+                            errorAlert = true
+                        }
+                        else {
+                            val food = FoodItem(
+                                mealId = mealId,
+                                name = nameField.text,
+                                carbs = carbField.text.toDoubleOrNull() ?: 0.0,
+                                calories = calField.text.toDoubleOrNull() ?: 0.0
+                            )
+                            db.addFood(food)
+                            close()
+                        }
                     }
             ) {
                 Text(
@@ -128,15 +139,24 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     .clip(RoundedCornerShape(15.dp))
                     .background(Color.Yellow)
                     .clickable {
-                        val food = FoodItem(
-                            mealId = mealId,
-                            name = nameField.text,
-                            carbs = carbField.text.toDoubleOrNull() ?: 0.0,
-                            calories = calField.text.toDoubleOrNull() ?: 0.0
-                        )
-                        db.addFood(food)
-                        db.saveFood(food)
-                        close()
+                        if (
+                            nameField.text.isEmpty() ||
+                            carbField.text.toDoubleOrNull() == null ||
+                            calField.text.toDoubleOrNull() == null
+                            ) {
+                            errorAlert = true
+                        }
+                        else {
+                            val food = FoodItem(
+                                mealId = mealId,
+                                name = nameField.text,
+                                carbs = carbField.text.toDoubleOrNull() ?: 0.0,
+                                calories = calField.text.toDoubleOrNull() ?: 0.0
+                            )
+                            db.addFood(food)
+                            db.saveFood(food)
+                            close()
+                        }
                     }
             ) {
                 Text(
@@ -148,6 +168,35 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)
                 )
             }
+        }
+        if (errorAlert) {
+            AlertDialog(
+                onDismissRequest = { errorAlert = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = { errorAlert = false }
+                    ) {
+                        Text(
+                            "Ok",
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                title = { Text("Invalid inputs") },
+                text = {
+                    Column {
+                        if (nameField.text.isEmpty())
+                            Text("Food item must have a name")
+                        if (carbField.text.toDoubleOrNull() == null)
+                            Text("Carb input must be a valid number")
+                        if (calField.text.toDoubleOrNull() == null)
+                            Text("Calorie input must be a valid number")
+                    }
+                },
+                containerColor = MaterialTheme.colorScheme.surface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                textContentColor = MaterialTheme.colorScheme.onSurface,
+            )
         }
     }
 }

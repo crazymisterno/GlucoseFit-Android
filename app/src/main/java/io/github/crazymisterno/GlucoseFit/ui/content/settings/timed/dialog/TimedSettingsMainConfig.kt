@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +39,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
     var ratioValue by remember { mutableStateOf(TextFieldValue(setting.insulinToCarbRatio)) }
     var correctionValue by remember { mutableStateOf(TextFieldValue(setting.correctionDose)) }
     var targetValue by remember { mutableStateOf(TextFieldValue(setting.targetGlucose)) }
+    var errorAlert by remember { mutableStateOf(false) }
     val interaction = remember { MutableInteractionSource() }
 
     Box(
@@ -68,7 +71,9 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                 onValueChange = { ratioValue = it },
                 label = { Text("Insulin to Carb Ratio") },
                 colors = textFieldColors(),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                prefix = { Text("1:") },
+                isError = ratioValue.text.toDoubleOrNull() == null && ratioValue.text.isNotEmpty()
             )
             Spacer(Modifier.height(5.dp))
             TextField(
@@ -76,7 +81,9 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                 onValueChange = { correctionValue = it },
                 label = { Text("Correction Dose") },
                 colors = textFieldColors(),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                prefix = { Text("1:") },
+                isError = correctionValue.text.toDoubleOrNull() == null && correctionValue.text.isNotEmpty()
             )
             Spacer(Modifier.height(5.dp))
             TextField(
@@ -84,7 +91,9 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                 onValueChange = { targetValue = it },
                 label = { Text("Target Glucose") },
                 colors = textFieldColors(),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                suffix = { Text("mg/dL") },
+                isError = targetValue.text.toDoubleOrNull() == null && targetValue.text.isNotEmpty()
             )
             Row(
                 modifier = Modifier
@@ -93,12 +102,16 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                     .clip(RoundedCornerShape(15.dp))
                     .background(Color.Blue)
                     .clickable {
-                        action(
-                            ratioValue.text,
-                            correctionValue.text,
-                            targetValue.text,
-                            false
-                        )
+                        if (
+                            ratioValue.text.toDoubleOrNull() == null ||
+                            correctionValue.text.toDoubleOrNull() == null ||
+                            targetValue.text.toDoubleOrNull() == null
+                            ) {
+                            errorAlert = true
+                        }
+                        else {
+                            action(ratioValue.text, correctionValue.text, targetValue.text, false)
+                        }
                     },
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
@@ -136,6 +149,32 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                     modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)
                 )
             }
+            if (errorAlert)
+                AlertDialog(
+                    onDismissRequest = { errorAlert = false },
+                    confirmButton = {
+                        TextButton(onClick = {errorAlert = false }) {
+                            Text(
+                                "Ok",
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    },
+                    title = { Text("Invalid settings") },
+                    text = {
+                        Column {
+                            if (ratioValue.text.toDoubleOrNull() == null)
+                                Text("Insulin to Carb Ratio must be a valid number")
+                            if (correctionValue.text.toDoubleOrNull() == null)
+                                Text("Correction dose must be a valid number")
+                            if (targetValue.text.toDoubleOrNull() == null)
+                                Text("Target glucose must be a valid number")
+                        }
+                    },
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                    textContentColor = MaterialTheme.colorScheme.onSurface
+                )
         }
     }
 }

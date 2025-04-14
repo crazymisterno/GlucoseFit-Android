@@ -63,14 +63,14 @@ fun textFieldColors(): TextFieldColors {
         unfocusedSupportingTextColor = MaterialTheme.colorScheme.onSurface,
         disabledSupportingTextColor = MaterialTheme.colorScheme.onSurface,
         errorSupportingTextColor = MaterialTheme.colorScheme.onSurface,
-        focusedPrefixColor = LightBgGreen,
-        unfocusedPrefixColor = MaterialTheme.colorScheme.surface,
-        disabledPrefixColor = MaterialTheme.colorScheme.surface,
-        errorPrefixColor = MaterialTheme.colorScheme.error,
-        focusedSuffixColor = LightBgGreen,
-        unfocusedSuffixColor = MaterialTheme.colorScheme.surface,
-        disabledSuffixColor = MaterialTheme.colorScheme.surface,
-        errorSuffixColor = MaterialTheme.colorScheme.surface
+        focusedPrefixColor = MaterialTheme.colorScheme.onSurface,
+        unfocusedPrefixColor = MaterialTheme.colorScheme.onSurface,
+        disabledPrefixColor = MaterialTheme.colorScheme.onSurface,
+        errorPrefixColor = MaterialTheme.colorScheme.onSurface,
+        focusedSuffixColor = MaterialTheme.colorScheme.onSurface,
+        unfocusedSuffixColor = MaterialTheme.colorScheme.onSurface,
+        disabledSuffixColor = MaterialTheme.colorScheme.onSurface,
+        errorSuffixColor = MaterialTheme.colorScheme.onSurface
     )
 }
 

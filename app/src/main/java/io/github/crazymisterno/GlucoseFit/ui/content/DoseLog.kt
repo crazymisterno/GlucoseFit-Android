@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -59,6 +60,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
     Log.println(Log.INFO, "Message", "Recomposing Dose log")
     val focusManager = LocalFocusManager.current
     var doseValue by remember { mutableStateOf(TextFieldValue()) }
+    var errorAlert by remember { mutableStateOf(false) }
     val interaction = remember { MutableInteractionSource() }
     val logs by remember { db.getDoseLogs(date) }.collectAsState()
     val currentSettings by db.getTimeSetting().collectAsState()
@@ -186,7 +188,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                 onValueChange = { doseValue = it },
                 label = { Text("Enter number of units") },
                 colors = textFieldColors(),
-                isError = doseValue.text.toDoubleOrNull() == null,
+                isError = doseValue.text.toDoubleOrNull() == null && doseValue.text.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth().padding(15.dp)
             )
 
@@ -286,6 +288,9 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                                 db.logDose(doseValue.text.toDouble(), date)
                             }
                         }
+                        else {
+                            errorAlert = true
+                        }
                     }
             ) {
                 Text(
@@ -310,6 +315,26 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                 if (index < logs.size - 1)
                     HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
             }
+        }
+        if (errorAlert) {
+            AlertDialog(
+                onDismissRequest = { errorAlert = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = { errorAlert = false }
+                    ) {
+                        Text(
+                            "Ok",
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                title = @Composable { Text("Invalid dose") },
+                text = { Text("Dose log must be of a valid number") },
+                containerColor = MaterialTheme.colorScheme.surface,
+                textContentColor = MaterialTheme.colorScheme.onSurface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface
+            )
         }
     }
 }
