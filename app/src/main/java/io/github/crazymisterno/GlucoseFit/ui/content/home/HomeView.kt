@@ -101,7 +101,7 @@ fun HomeView(
         ) {
             composable<Home> {
                 when (carbOnly) {
-                    true -> CarbHomeRoot(date, meals) {
+                    true -> CarbHomeRoot(date, meals) { id ->
                         navigator.navigate(Meal(id))
                     }
                     false -> HomeRoot(date, meals) { id ->
