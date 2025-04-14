@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.TypeConverter
 import androidx.room.Update
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.time.LocalTime
@@ -69,6 +70,21 @@ interface TimedSettingsAccess {
             }
             else {
                 emit(firstQuery)
+            }
+            delay(1000)
+        }
+    }
+
+    fun findActive(): Flow<TimedSettings?> {
+        return flow {
+            while (true) {
+                val firstQuery = getByTime(LocalTime.now())
+                if (firstQuery == null) {
+                    emit(getLastSetting())
+                }
+                else {
+                    emit(firstQuery)
+                }
             }
         }
     }

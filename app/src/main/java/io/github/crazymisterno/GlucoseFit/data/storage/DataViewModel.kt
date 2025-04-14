@@ -179,8 +179,7 @@ class DataViewModel @Inject constructor(
 
     fun getTimeSetting(): StateFlow<TimedSettings?> {
         Log.println(Log.INFO, "Message", "Rerunning query")
-        return database.timedSettingAccess().findActive(LocalTime.now())
-            .distinctUntilChanged()
+        return database.timedSettingAccess().findActive()
             .stateIn(
                 viewModelScope,
                 SharingStarted.Eagerly,
