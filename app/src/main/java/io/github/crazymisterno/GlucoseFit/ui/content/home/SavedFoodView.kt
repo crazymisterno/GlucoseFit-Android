@@ -1,5 +1,6 @@
 package io.github.crazymisterno.GlucoseFit.ui.content.home
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
@@ -41,6 +43,7 @@ import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 @Composable
 fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), dialog: (SavedFoodItem) -> Unit, close: () -> Unit) {
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
     val interaction = remember { MutableInteractionSource() }
     var search by remember { mutableStateOf(TextFieldValue()) }
     val savedList by remember { db.savedFood }.collectAsState()
@@ -103,7 +106,19 @@ fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), dialog: (Sav
                 itemsIndexed(loadList) { index, item ->
                     ListItem(
                         headlineContent = { Text(item.name) },
-                        modifier = Modifier.combinedClickable(
+                        supportingContent = { Text("${item.carbs}g carbs, ${item.calories} Calories")},
+                        modifier = Modifier
+                            .clip(
+                                if (index == 0 && index == loadList.size - 1)
+                                    RoundedCornerShape(15.dp)
+                                else if (index == 0)
+                                RoundedCornerShape(topEnd = 15.dp, topStart = 15.dp)
+                                else if (index == loadList.size - 1)
+                                RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
+                                else
+                                RoundedCornerShape(0.dp)
+                            )
+                            .combinedClickable(
                             onClick = {
                                 val imported = FoodItem(
                                     mealId = mealId,
@@ -112,6 +127,9 @@ fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), dialog: (Sav
                                     calories = item.calories
                                 )
                                 db.addFood(imported)
+                                Toast
+                                    .makeText(context, "Food imported", Toast.LENGTH_SHORT)
+                                    .show()
                                 close()
                             },
                             onLongClick = {

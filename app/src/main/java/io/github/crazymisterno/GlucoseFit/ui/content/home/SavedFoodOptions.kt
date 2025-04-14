@@ -1,5 +1,6 @@
 package io.github.crazymisterno.GlucoseFit.ui.content.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
 @Composable
 fun SavedFoodOptions(foodId: Int, mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> Unit) {
     val food by remember { db.idSavedFood(foodId) }.collectAsState()
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,6 +58,9 @@ fun SavedFoodOptions(foodId: Int, mealId: Int, db: DataViewModel = hiltViewModel
                 .background(MaterialTheme.colorScheme.surfaceBright)
                 .clickable {
                     db.importFood(food, mealId)
+                    Toast
+                        .makeText(context, "Food imported", Toast.LENGTH_SHORT)
+                        .show()
                     close()
                 }
         ) {
@@ -82,6 +88,9 @@ fun SavedFoodOptions(foodId: Int, mealId: Int, db: DataViewModel = hiltViewModel
                 .background(MaterialTheme.colorScheme.surfaceBright)
                 .clickable {
                     db.deleteSavedFood(food)
+                    Toast
+                        .makeText(context, "Food item deleted", Toast.LENGTH_SHORT)
+                        .show()
                     close()
                 }
         ) {

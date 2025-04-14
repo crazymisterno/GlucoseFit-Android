@@ -1,5 +1,6 @@
 package io.github.crazymisterno.GlucoseFit.ui.content.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -124,6 +126,7 @@ fun MealLogView(
 
 @Composable
 fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -178,6 +181,9 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
                                     modifier = Modifier
                                         .clickable {
                                             db.deleteFood(item)
+                                            Toast
+                                                .makeText(context, "Food deleted", Toast.LENGTH_SHORT)
+                                                .show()
                                         }
                                 )
                                 Spacer(Modifier.width(5.dp))
@@ -188,6 +194,9 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
                                     modifier = Modifier
                                         .clickable {
                                             db.saveFood(item)
+                                            Toast
+                                                .makeText(context, "Food saved", Toast.LENGTH_SHORT)
+                                                .show()
                                         }
                                 )
                             }
