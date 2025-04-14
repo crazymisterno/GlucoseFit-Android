@@ -11,7 +11,6 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 @Entity(tableName = "timedSettings")
 data class TimedSettings(
@@ -33,7 +32,7 @@ interface TimedSettingsAccess {
     @Query("DELETE FROM timedSettings where id = :id")
     suspend fun deleteById(id: Int)
 
-    @Query("SELECT * FROM timedSettings")
+    @Query("SELECT * FROM timedSettings ORDER BY startTime")
     fun getAll(): Flow<List<TimedSettings>>
 
     @Query("SELECT * FROM timedSettings")

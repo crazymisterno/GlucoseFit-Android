@@ -20,9 +20,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.zedalpha.shadowgadgets.compose.clippedShadow
-import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.MealWithFood
 import java.time.LocalDate
 import java.time.format.TextStyle

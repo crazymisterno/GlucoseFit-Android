@@ -38,6 +38,7 @@ import java.time.LocalTime
 @Composable
 fun TimedSettingsList(db: DataViewModel = hiltViewModel(), select: (Int, Boolean) -> Unit) {
     val allSettings by db.getAllTimeSettings().collectAsState()
+    val currentSetting by db.getTimeSetting().collectAsState()
     val latestId by db.latestId.collectAsState()
     LaunchedEffect(latestId) {
         latestId?.let { id ->
@@ -58,7 +59,7 @@ fun TimedSettingsList(db: DataViewModel = hiltViewModel(), select: (Int, Boolean
                 .height(500.dp)
         ) {
             items(allSettings, key = { it.id }) { setting ->
-                TimedSection(setting) { action ->
+                TimedSection(setting, setting.id == (currentSetting?.id ?: -1)) { action ->
                     if (action == 0) {
                         select(setting.id, false)
                     } else if (action == 1) {

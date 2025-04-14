@@ -22,10 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
+import io.github.crazymisterno.GlucoseFit.ui.theme.LightBgBlue
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun TimedSection(setting: TimedSettings, action: (Int) -> Unit) {
+fun TimedSection(setting: TimedSettings, isCurrent: Boolean, action: (Int) -> Unit) {
     val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     val format = if (is24Hour) {
         DateTimeFormatter.ofPattern("H:mm")
@@ -39,7 +40,7 @@ fun TimedSection(setting: TimedSettings, action: (Int) -> Unit) {
             .fillMaxWidth()
             .padding(5.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(if (isCurrent) LightBgBlue else MaterialTheme.colorScheme.surface)
             .clickable {
                 action(0)
             },
@@ -63,7 +64,7 @@ fun TimedSection(setting: TimedSettings, action: (Int) -> Unit) {
                 modifier = Modifier.padding(horizontal = 15.dp)
             )
             Text(
-                "Target Glucose: ${setting.targetGlucose}",
+                "Target Glucose: ${setting.targetGlucose} mg/dL",
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(horizontal = 15.dp).padding(bottom = 15.dp)
             )
