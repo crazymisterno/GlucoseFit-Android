@@ -65,12 +65,7 @@ interface TimedSettingsAccess {
     fun findActive(time: LocalTime): Flow<TimedSettings?> {
         return flow {
             val firstQuery = getByTime(time)
-            if (firstQuery == null) {
-                emit(getLastSetting())
-            }
-            else {
-                emit(firstQuery)
-            }
+            emit(firstQuery ?: getLastSetting())
             delay(1000)
         }
     }
@@ -79,12 +74,8 @@ interface TimedSettingsAccess {
         return flow {
             while (true) {
                 val firstQuery = getByTime(LocalTime.now())
-                if (firstQuery == null) {
-                    emit(getLastSetting())
-                }
-                else {
-                    emit(firstQuery)
-                }
+                emit(firstQuery ?: getLastSetting())
+                delay(1000)
             }
         }
     }
