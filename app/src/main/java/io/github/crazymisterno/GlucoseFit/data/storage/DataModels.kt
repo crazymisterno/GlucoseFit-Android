@@ -64,7 +64,7 @@ data class DoseLogEntry(
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 ) {
     @Composable
-    fun Display(db: DataViewModel = hiltViewModel()) {
+    fun Display(modifier: Modifier, db: DataViewModel = hiltViewModel()) {
         val formatter = if (DateFormat.is24HourFormat(LocalContext.current)) {
             DateTimeFormatter.ofPattern("H:mm")
         }
@@ -83,7 +83,8 @@ data class DoseLogEntry(
                     .clickable {
                         db.removeDoseLog(this)
                     }
-            ) }
+            ) },
+            modifier = modifier
         )
     }
 }

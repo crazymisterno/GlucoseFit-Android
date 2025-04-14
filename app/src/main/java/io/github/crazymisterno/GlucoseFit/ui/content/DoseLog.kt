@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -87,231 +88,238 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                 focusManager.clearFocus()
             }
     ) {
-        Text(
-            text = "Insulin Dose Log",
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
-                .padding(10.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-                .clip(RoundedCornerShape(15.dp))
-                .background(MaterialTheme.colorScheme.surface)
-        ) {
-            Text(
-                "Current active settings",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(15.dp)
-            )
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                if (currentSettings != null) {
-                    Column {
-                        Text(
-                            "Insulin:carb",
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            "1:${currentSettings!!.insulinToCarbRatio}",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Column {
-                        Text(
-                            "Correction",
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            "1:${currentSettings!!.correctionDose}",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Column {
-                        Text(
-                            "Target",
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            "${currentSettings!!.targetGlucose} mg/dL",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                }
-                else {
-                    Text(
-                        "No setting configured",
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        }
-
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-                .clip(RoundedCornerShape(15.dp))
-                .background(MaterialTheme.colorScheme.surface)
-        ) {
-            Text(
-                "Log a new insulin dose",
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(15.dp)
-            )
-            TextField(
-                value = doseValue,
-                onValueChange = { doseValue = it },
-                label = { Text("Enter number of units") },
-                colors = textFieldColors(),
-                isError = doseValue.text.toDoubleOrNull() == null && doseValue.text.isNotEmpty(),
-                modifier = Modifier.fillMaxWidth().padding(15.dp)
-            )
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+        LazyColumn(contentPadding = PaddingValues(all = 15.dp)) {
+            item {
                 Text(
-                    "Use a different time",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    text = "Insulin Dose Log",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical =  15.dp)
                 )
-                Row {
-                    Switch(
-                        checked = usingCustom,
-                        onCheckedChange = {
-                            usingCustom = it
-                        },
-                        colors = switchColors()
+            }
+
+            item {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 15.dp)
+                        .clip(RoundedCornerShape(15.dp))
+                        .background(MaterialTheme.colorScheme.surface)
+                ) {
+                    Text(
+                        "Current active settings",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(15.dp)
                     )
-                    if (usingCustom) {
-                        Spacer(Modifier.width(10.dp))
-                        TextButton(
-                            onClick = {
-                                dropDown = true
-                            },
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15.dp))
-                                .background(Color.Blue)
-                        ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(15.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        if (currentSettings != null) {
+                            Column {
+                                Text(
+                                    "Insulin:carb",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Light,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    "1:${currentSettings!!.insulinToCarbRatio}",
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                            Column {
+                                Text(
+                                    "Correction",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Light,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    "1:${currentSettings!!.correctionDose}",
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                            Column {
+                                Text(
+                                    "Target",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Light,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    "${currentSettings!!.targetGlucose} mg/dL",
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        } else {
                             Text(
-                                time.format(formatter),
-                                color = MaterialTheme.colorScheme.onSurface,
+                                "No setting configured",
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
                 }
             }
 
-            if (dropDown) {
-                Dialog(
-                    onDismissRequest = { dropDown = false }
+            item {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 15.dp)
+                        .clip(RoundedCornerShape(15.dp))
+                        .background(MaterialTheme.colorScheme.surface)
                 ) {
-                    Column(
+                    Text(
+                        "Log a new insulin dose",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(15.dp)
+                    )
+                    TextField(
+                        value = doseValue,
+                        onValueChange = { doseValue = it },
+                        label = { Text("Enter number of units") },
+                        colors = textFieldColors(),
+                        isError = doseValue.text.toDoubleOrNull() == null && doseValue.text.isNotEmpty(),
+                        modifier = Modifier.fillMaxWidth().padding(15.dp)
+                    )
+
+                    Row(
                         Modifier
+                            .fillMaxWidth()
+                            .padding(15.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Use a different time",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Row {
+                            Switch(
+                                checked = usingCustom,
+                                onCheckedChange = {
+                                    usingCustom = it
+                                },
+                                colors = switchColors()
+                            )
+                            if (usingCustom) {
+                                Spacer(Modifier.width(10.dp))
+                                TextButton(
+                                    onClick = {
+                                        dropDown = true
+                                    },
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(15.dp))
+                                        .background(Color.Blue)
+                                ) {
+                                    Text(
+                                        time.format(formatter),
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (dropDown) {
+                        Dialog(
+                            onDismissRequest = { dropDown = false }
+                        ) {
+                            Column(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(15.dp)
+                                    .clip(RoundedCornerShape(15.dp))
+                                    .background(MaterialTheme.colorScheme.surface)
+                            ) {
+                                TimePicker(
+                                    state = timeState,
+                                    modifier = Modifier
+                                        .padding(15.dp),
+                                    colors = timePickerColors()
+                                )
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(15.dp)
+                                        .clip(RoundedCornerShape(15.dp))
+                                        .background(Color.Blue)
+                                        .clickable {
+                                            time = LocalTime.of(timeState.hour, timeState.minute)
+                                            dropDown = false
+                                        }
+                                ) {
+                                    Text(
+                                        "Ok",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(15.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(15.dp)
                             .clip(RoundedCornerShape(15.dp))
-                            .background(MaterialTheme.colorScheme.surface)
-                    ) {
-                        TimePicker(
-                            state = timeState,
-                            modifier = Modifier
-                                .padding(15.dp),
-                            colors = timePickerColors()
-                        )
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(15.dp)
-                                .clip(RoundedCornerShape(15.dp))
-                                .background(Color.Blue)
-                                .clickable {
-                                    time = LocalTime.of(timeState.hour, timeState.minute)
-                                    dropDown = false
+                            .background(Color.Blue)
+                            .clickable {
+                                if (doseValue.text.toDoubleOrNull() != null) {
+                                    if (usingCustom) {
+                                        db.logDose(doseValue.text.toDouble(), date, time)
+                                    } else {
+                                        db.logDose(doseValue.text.toDouble(), date)
+                                    }
+                                } else {
+                                    errorAlert = true
                                 }
-                        ) {
-                            Text(
-                                "Ok",
-                                style = MaterialTheme.typography.headlineSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(15.dp)
-                            )
-                        }
+                            }
+                    ) {
+                        Text(
+                            "Log",
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)
+                        )
                     }
                 }
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp)
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(Color.Blue)
-                    .clickable {
-                        if (doseValue.text.toDoubleOrNull() != null) {
-                            if (usingCustom) {
-                                db.logDose(doseValue.text.toDouble(), date, time)
-                            } else {
-                                db.logDose(doseValue.text.toDouble(), date)
-                            }
-                        }
-                        else {
-                            errorAlert = true
-                        }
-                    }
-            ) {
-                Text(
-                    "Log",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)
-                )
-            }
-        }
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-                .clip(RoundedCornerShape(15.dp))
-        ) {
             itemsIndexed(logs) { index, item ->
-                item.Display()
+                item.Display(Modifier.clip(
+                    if (index == 0)
+                        RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
+                    else if (index == logs.size - 1)
+                        RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
+                    else
+                        RoundedCornerShape(0.dp)
+                ))
                 if (index < logs.size - 1)
                     HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
             }
