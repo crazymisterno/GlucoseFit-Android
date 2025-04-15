@@ -84,7 +84,8 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 label = { Text("Carbs (g)") },
                 colors = textFieldColors(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                isError = carbField.text.toDoubleOrNull() == null && carbField.text.isNotEmpty()
+                isError = carbField.text.toDoubleOrNull() == null && carbField.text.isNotEmpty(),
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(15.dp))
             TextField(
@@ -95,7 +96,8 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 label = { Text("Calories") },
                 colors = textFieldColors(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                isError = calField.text.toDoubleOrNull() == null && calField.text.isNotEmpty()
+                isError = calField.text.toDoubleOrNull() == null && calField.text.isNotEmpty(),
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.padding(15.dp))
             Box(
