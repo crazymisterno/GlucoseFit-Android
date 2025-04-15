@@ -145,8 +145,6 @@ dependencies {
     implementation(libs.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
-    // For Jetpack Compose integration (if using Compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
 }
