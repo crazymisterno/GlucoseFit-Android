@@ -79,7 +79,7 @@ data class DoseLogEntry(
                 Icons.Filled.Delete,
                 "Delete",
                 tint = Color.Red,
-                modifier = Modifier
+                modifier = modifier
                     .clickable {
                         db.removeDoseLog(this)
                     }

@@ -313,7 +313,10 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
 
             itemsIndexed(logs) { index, item ->
                 item.Display(Modifier.clip(
-                    if (index == 0)
+                    if (index == 0 && index == logs.size - 1) {
+                        RoundedCornerShape(15.dp)
+                    }
+                    else if (index == 0)
                         RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
                     else if (index == logs.size - 1)
                         RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)

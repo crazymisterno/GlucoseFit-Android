@@ -1,5 +1,6 @@
 package io.github.crazymisterno.GlucoseFit.ui.content.calendar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -10,6 +11,9 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import io.github.crazymisterno.GlucoseFit.ui.content.DoseLog
 import io.github.crazymisterno.GlucoseFit.ui.content.home.HomeView
 import kotlinx.coroutines.launch
@@ -22,7 +26,16 @@ fun DetailAtDay(date: LocalDate) {
     var pagerState = rememberPagerState(0) { tabNames.size }
     val scope = rememberCoroutineScope()
     Column {
-        SecondaryTabRow(pagerState.currentPage) {
+        SecondaryTabRow(
+            pagerState.currentPage,
+            modifier = Modifier
+                .background(
+                    Brush.horizontalGradient(listOf<Color>(
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.9f)
+                    ))
+                )
+        ) {
             tabNames.forEachIndexed { index, name ->
                 Tab(
                     selected = pagerState.currentPage == index,
