@@ -1,6 +1,10 @@
 package io.github.crazymisterno.GlucoseFit.ui.onboarding
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +44,7 @@ import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.Disclaimer
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.Finish
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.InitalSetup
+import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.PermissionRequest
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.TimedSettingsSetup
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.WelcomeScreen
 import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
@@ -46,14 +52,24 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OnBoarding : ComponentActivity() {
+
+    private fun isBluetoothPermissionGranted(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.BLUETOOTH_CONNECT
+        ) == PackageManager.PERMISSION_GRANTED
+        else
+            return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         setContent {
             val setting: SettingsViewModel = hiltViewModel()
             GlucoseFitMaterialTheme {
-                OnBoardingMain {
+                OnBoardingMain(isBluetoothPermissionGranted(), applicationContext) {
                     lifecycleScope.launch {
                         setting.updateSettings(setupFinished = true)
                     }
@@ -66,7 +82,7 @@ class OnBoarding : ComponentActivity() {
 }
 
 @Composable
-fun OnBoardingMain(done: () -> Unit) {
+fun OnBoardingMain(bluetoothGranted: Boolean, context: Context, done: () -> Unit) {
     var step by remember { mutableIntStateOf(0) }
     val scroll = rememberScrollState()
 
@@ -94,12 +110,23 @@ fun OnBoardingMain(done: () -> Unit) {
         ) {
             when (it) {
                 0 -> Disclaimer {
-                    step++
+                    step = 1
                 }
-                1 -> WelcomeScreen { step++ }
-                2 -> InitalSetup { step++ }
-                3 -> TimedSettingsSetup { step++ }
-                4 -> Finish { done() }
+                1 -> WelcomeScreen(context) { hasWatch ->
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && hasWatch && !bluetoothGranted) {
+                        step = 2
+                    }
+                    else {
+                        step = 3
+                    }
+                }
+                2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                    PermissionRequest {
+                        step = 3
+                    }
+                3 -> InitalSetup { step = 4 }
+                4 -> TimedSettingsSetup { step = 5 }
+                5 -> Finish { done() }
             }
         }
     }
