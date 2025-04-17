@@ -18,17 +18,21 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+@Serializable
 @Entity(tableName = "meals")
 data class MealLogEntry(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
+    @Serializable(with = DateSerializer::class)
     val date: LocalDate
 )
 
+@Serializable
 @Entity(
     tableName = "food",
     foreignKeys = [ForeignKey(
@@ -48,6 +52,7 @@ data class FoodItem(
     val calories: Double
 )
 
+@Serializable
 @Entity(tableName = "savedFood")
 data class SavedFoodItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -56,9 +61,12 @@ data class SavedFoodItem(
     val calories: Double
 )
 
+@Serializable
 @Entity(tableName = "doseLog")
 data class DoseLogEntry(
+    @Serializable(with = DateSerializer::class)
     val date: LocalDate,
+    @Serializable(with = TimeSerializer::class)
     val time: LocalTime,
     val dose: Double,
     @PrimaryKey(autoGenerate = true) val id: Int = 0

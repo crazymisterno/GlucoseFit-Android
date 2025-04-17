@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-04-15T21:24:11.255572Z">
+        <DropdownSelection timestamp="2025-04-17T15:54:42.804458Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/crazymisterno/.android/avd/Pixel_Tablet.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/crazymisterno/.android/avd/Wear_OS_Rectangular.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -34,6 +34,20 @@
       </SelectionState>
       <SelectionState runConfigName="HomeView">
         <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="glucosefitwear">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="wearApp">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2025-04-17T11:55:11.278012Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/crazymisterno/.android/avd/Wear_OS_Rectangular.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
     </selectionStates>
   </component>

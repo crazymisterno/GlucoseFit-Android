@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GlucoseFit"
 include(":app")
+include(":wearApp")

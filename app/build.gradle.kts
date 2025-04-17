@@ -9,7 +9,7 @@ plugins {
     id("com.google.devtools.ksp") version "2.1.10-1.0.31"
     id("androidx.room") version "2.7.0"
     id("com.google.protobuf") version "0.9.4"
-    kotlin("plugin.serialization") version "2.0.21"
+    kotlin("plugin.serialization") version "2.1.10"
     id("com.google.dagger.hilt.android")
 }
 
@@ -150,6 +150,8 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.play.services.wearable)
+    implementation(libs.kotlinx.coroutines.play.services)
 }
 
 configurations {
