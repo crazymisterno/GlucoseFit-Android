@@ -60,7 +60,8 @@ fun TimedSettingsClock(setting: TimedSettings, action: (Int, LocalTime) -> Unit)
             Spacer(Modifier.height(20.dp))
             TimePicker(
                 state = value,
-                colors = timePickerColors()
+                colors = timePickerColors(),
+                modifier = Modifier.fillMaxWidth()
             )
             Row(
                 modifier = Modifier

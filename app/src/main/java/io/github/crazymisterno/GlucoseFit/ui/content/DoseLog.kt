@@ -252,6 +252,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                                 TimePicker(
                                     state = timeState,
                                     modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(15.dp),
                                     colors = timePickerColors()
                                 )
