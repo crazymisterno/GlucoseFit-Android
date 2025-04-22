@@ -28,11 +28,12 @@ import io.github.crazymisterno.GlucoseFit.ui.theme.datePickerColors
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarMain(navigate: (Int, Int, Int) -> Unit) {
-    var state = rememberDatePickerState()
+    var state = rememberDatePickerState(initialSelectedDateMillis = Date.from(Instant.now()).time)
     var scroll = rememberScrollState()
     Column(
         Modifier
