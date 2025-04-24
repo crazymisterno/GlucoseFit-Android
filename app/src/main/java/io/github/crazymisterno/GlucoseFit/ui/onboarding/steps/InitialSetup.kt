@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
@@ -53,9 +52,7 @@ fun InitalSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Uni
             "Let's get you set up",
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(15.dp)
         )
         Row(
@@ -68,8 +65,7 @@ fun InitalSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Uni
                 "Enable carb-only view",
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .padding(vertical = 10.dp)
+                modifier = Modifier.padding(vertical = 10.dp)
             )
             Switch(
                 checked = settingsState.carbOnly,

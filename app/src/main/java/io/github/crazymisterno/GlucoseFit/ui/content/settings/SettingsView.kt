@@ -95,8 +95,7 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, B
                     "Enable carb-only view",
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier
-                        .padding(vertical = 10.dp)
+                    modifier = Modifier.padding(vertical = 10.dp)
                 )
                 Switch(
                     checked = settings.value.carbOnly,

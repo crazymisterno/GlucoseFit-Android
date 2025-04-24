@@ -50,10 +50,7 @@ fun ContentView() {
                     selectedContentColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     unselectedContentColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     modifier = Modifier.statusBarsPadding()
-                        .background(Brush.horizontalGradient(listOf<Color>(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.0f),
-                            MaterialTheme.colorScheme.secondary.copy(alpha = 0.0f)
-                        )))
+                        .background(Color.Transparent)
                 )
             }
         }

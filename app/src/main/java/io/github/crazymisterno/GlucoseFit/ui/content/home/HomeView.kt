@@ -2,6 +2,7 @@ package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,8 +46,7 @@ import io.github.crazymisterno.GlucoseFit.dev.PreviewDate
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
-import java.time.format.TextStyle
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 @Serializable
 object Home
@@ -169,6 +169,7 @@ fun HomeRoot(
         }
     }
     val finalCals = settings.settings.collectAsState().value.manualCalories.toDoubleOrNull() ?: 0.0
+    val formatter = DateTimeFormatter.ofPattern("MMM d, uuuu")
 
     Column(modifier = Modifier
         .background(Brush.horizontalGradient(listOf(
@@ -191,9 +192,7 @@ fun HomeRoot(
                 .padding(15.dp)
         ) {
             Text(
-                date.month.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.US) + " " +
-                date.dayOfMonth + ", " +
-                date.year,
+                date.format(formatter),
                 fontSize = 24.sp,
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                 textAlign = TextAlign.Center,
@@ -227,7 +226,8 @@ fun HomeRoot(
         }
         Spacer(Modifier.height(15.dp))
         LazyColumn(
-            Modifier.fillMaxHeight()
+            Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             if (mealList.isEmpty()) {
                 item {
@@ -244,7 +244,6 @@ fun HomeRoot(
                 MealSection(meal) {
                     navigate(meal.meal.id)
                 }
-                Spacer(Modifier.height(15.dp))
             }
         }
     }
@@ -259,14 +258,9 @@ fun MealSection(meal: MealWithFood, pressed: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .clippedShadow(
-                20.dp,
-                RoundedCornerShape(15.dp)
-            )
+            .clippedShadow(20.dp, RoundedCornerShape(15.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .clickable {
-                pressed()
-            }
+            .clickable { pressed() }
             .padding(10.dp)
     ) {
         Text(

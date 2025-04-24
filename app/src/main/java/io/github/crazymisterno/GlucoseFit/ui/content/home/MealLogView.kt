@@ -3,6 +3,7 @@ package io.github.crazymisterno.GlucoseFit.ui.content.home
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -36,23 +38,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.FoodItem
-import io.github.crazymisterno.GlucoseFit.dev.PreviewIds
-import java.time.format.TextStyle
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun MealLogView(
-    @PreviewParameter(PreviewIds::class) mealId: Int,
+    mealId: Int,
     db: DataViewModel = hiltViewModel(),
     navigate: (Int, Int) -> Unit
 ) {
     val meal by remember { db.idMeal(mealId) }.collectAsState()
+    val formatter = DateTimeFormatter.ofPattern("MMM d, uuuu")
     Column(
         modifier = Modifier
             .background(Brush.horizontalGradient(listOf(
@@ -62,63 +62,50 @@ fun MealLogView(
             .fillMaxSize()
             .padding(top = 15.dp)
             .padding(horizontal = 15.dp)
-            .navigationBarsPadding()
+            .navigationBarsPadding(),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(
-            meal.meal.name + " for " +
-            meal.meal.date.month?.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.US) + " " +
-            meal.meal.date.dayOfMonth + ", " +
-            meal.meal.date.year,
-            fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+            "${meal.meal.name} for ${meal.meal.date.format(formatter)}",
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
+            lineHeight = 30.sp,
             modifier = Modifier.fillMaxWidth(),
-            lineHeight = 40.sp
         )
-        Spacer(Modifier.height(20.dp))
         FoodList(meal.food)
-        Spacer(Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(15.dp))
-                .background(Color.Green)
-                .clickable {
-                    navigate(0, mealId)
-                },
+        Button(
+            onClick = { navigate(0, mealId) },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Green,
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(15.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 "Add Food",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
-                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(15.dp)
-                    .fillMaxWidth()
+                    .padding(5.dp)
             )
         }
-        Spacer(Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(15.dp))
-                .background(Color(255, 148, 0))
-                .clickable {
-                    navigate(1, mealId)
-                }
+        Button(
+            onClick = { navigate(1, mealId)},
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(255, 148, 0),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(15.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 "Add from Saved Foods",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
-                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(15.dp)
-                    .fillMaxWidth()
+                    .padding(5.dp)
             )
         }
     }

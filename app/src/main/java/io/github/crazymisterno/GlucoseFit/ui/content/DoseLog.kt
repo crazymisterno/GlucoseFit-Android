@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -38,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
+import io.github.crazymisterno.GlucoseFit.ui.theme.buttonColors
 import io.github.crazymisterno.GlucoseFit.ui.theme.switchColors
 import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 import io.github.crazymisterno.GlucoseFit.ui.theme.timePickerColors
@@ -227,7 +228,7 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                                     },
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(15.dp))
-                                        .background(Color.Blue)
+                                        .background(buttonColors().containerColor)
                                 ) {
                                     Text(
                                         time.format(formatter),
@@ -256,57 +257,43 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
                                         .padding(15.dp),
                                     colors = timePickerColors()
                                 )
-                                Row(
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(15.dp)
-                                        .clip(RoundedCornerShape(15.dp))
-                                        .background(Color.Blue)
-                                        .clickable {
-                                            time = LocalTime.of(timeState.hour, timeState.minute)
-                                            dropDown = false
-                                        }
+                                Button(
+                                    onClick = {
+                                        time = LocalTime.of(timeState.hour, timeState.minute)
+                                        dropDown = false
+                                    },
+                                    colors = buttonColors(),
+                                    shape = RoundedCornerShape(15.dp),
+                                    modifier = Modifier.fillMaxWidth().padding(15.dp)
                                 ) {
                                     Text(
                                         "Ok",
                                         style = MaterialTheme.typography.headlineSmall,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(15.dp)
                                     )
                                 }
                             }
                         }
                     }
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(15.dp)
-                            .clip(RoundedCornerShape(15.dp))
-                            .background(Color.Blue)
-                            .clickable {
-                                if (doseValue.text.toDoubleOrNull() != null) {
-                                    if (usingCustom) {
-                                        db.logDose(doseValue.text.toDouble(), date, time)
-                                    } else {
-                                        db.logDose(doseValue.text.toDouble(), date)
-                                    }
-                                } else {
-                                    errorAlert = true
-                                }
-                            }
+                    Button(
+                        onClick = {
+                            if (doseValue.text.toDoubleOrNull() != null)
+                                if (usingCustom)
+                                    db.logDose(doseValue.text.toDouble(), date, time)
+                                else
+                                    db.logDose(doseValue.text.toDouble(), date)
+                            else
+                                errorAlert = true
+                        },
+                        colors = buttonColors(),
+                        shape = RoundedCornerShape(15.dp),
+                        modifier = Modifier.fillMaxWidth().padding(15.dp)
                     ) {
                         Text(
                             "Log",
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)
+                            modifier = Modifier.padding(5.dp)
                         )
                     }
                 }
@@ -314,9 +301,8 @@ fun DoseLog(date: LocalDate, db: DataViewModel = hiltViewModel()) {
 
             itemsIndexed(logs) { index, item ->
                 item.Display(Modifier.clip(
-                    if (index == 0 && index == logs.size - 1) {
+                    if (index == 0 && logs.size == 1)
                         RoundedCornerShape(15.dp)
-                    }
                     else if (index == 0)
                         RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
                     else if (index == logs.size - 1)

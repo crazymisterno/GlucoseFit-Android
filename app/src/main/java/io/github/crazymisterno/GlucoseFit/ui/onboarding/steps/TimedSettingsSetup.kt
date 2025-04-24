@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,9 +53,7 @@ fun TimedSettingsSetup(db: DataViewModel = hiltViewModel(), moveOn: () -> Unit) 
                     "Let's get your timed ratios set up",
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(15.dp)
                 )
                 TimedSettingsList { id, adding ->

@@ -3,6 +3,7 @@ package io.github.crazymisterno.GlucoseFit.ui.content.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -55,7 +58,8 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
     ) {
         Column(
             modifier = Modifier
-                .padding(all = 15.dp)
+                .padding(all = 15.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             Text(
                 "Add Food",
@@ -65,7 +69,7 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(5.dp))
             TextField(
                 value = nameField,
                 onValueChange = {
@@ -75,7 +79,6 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 colors = textFieldColors(),
                 modifier = Modifier.fillMaxWidth(),
             )
-            Spacer(Modifier.height(15.dp))
             TextField(
                 value = carbField,
                 onValueChange = {
@@ -87,7 +90,6 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 isError = carbField.text.toDoubleOrNull() == null && carbField.text.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(15.dp))
             TextField(
                 value = calField,
                 onValueChange = {
@@ -99,75 +101,73 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                 isError = calField.text.toDoubleOrNull() == null && calField.text.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.padding(15.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(Color.Green)
-                    .clickable {
-                        if (
-                            nameField.text.isEmpty() ||
-                            carbField.text.toDoubleOrNull() == null ||
-                            calField.text.toDoubleOrNull() == null
-                        ) {
-                            errorAlert = true
-                        }
-                        else {
-                            val food = FoodItem(
-                                mealId = mealId,
-                                name = nameField.text,
-                                carbs = carbField.text.toDoubleOrNull() ?: 0.0,
-                                calories = calField.text.toDoubleOrNull() ?: 0.0
-                            )
-                            db.addFood(food)
-                            close()
-                        }
+            Button(
+                onClick = {
+                    if (
+                        nameField.text.isEmpty() ||
+                        carbField.text.toDoubleOrNull() == null ||
+                        calField.text.toDoubleOrNull() == null
+                    ) {
+                        errorAlert = true
                     }
+                    else {
+                        val food = FoodItem(
+                            mealId = mealId,
+                            name = nameField.text,
+                            carbs = carbField.text.toDoubleOrNull() ?: 0.0,
+                            calories = calField.text.toDoubleOrNull() ?: 0.0
+                        )
+                        db.addFood(food)
+                        close()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(15.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     "Add",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)
+                    modifier = Modifier.padding(15.dp)
                 )
             }
-            Spacer(Modifier.height(15.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(Color.Yellow)
-                    .clickable {
-                        if (
-                            nameField.text.isEmpty() ||
-                            carbField.text.toDoubleOrNull() == null ||
-                            calField.text.toDoubleOrNull() == null
-                            ) {
-                            errorAlert = true
-                        }
-                        else {
-                            val food = FoodItem(
-                                mealId = mealId,
-                                name = nameField.text,
-                                carbs = carbField.text.toDoubleOrNull() ?: 0.0,
-                                calories = calField.text.toDoubleOrNull() ?: 0.0
-                            )
-                            db.addFood(food)
-                            db.saveFood(food)
-                            close()
-                        }
+            Button(
+                onClick = {
+                    if (
+                        nameField.text.isEmpty() ||
+                        carbField.text.toDoubleOrNull() == null ||
+                        calField.text.toDoubleOrNull() == null
+                    ) {
+                        errorAlert = true
                     }
+                    else {
+                        val food = FoodItem(
+                            mealId = mealId,
+                            name = nameField.text,
+                            carbs = carbField.text.toDoubleOrNull() ?: 0.0,
+                            calories = calField.text.toDoubleOrNull() ?: 0.0
+                        )
+                        db.addFood(food)
+                        db.saveFood(food)
+                        close()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black
+                ),
+                shape = RoundedCornerShape(15.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     "Save",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)
+                    modifier = Modifier.padding(15.dp)
                 )
             }
         }

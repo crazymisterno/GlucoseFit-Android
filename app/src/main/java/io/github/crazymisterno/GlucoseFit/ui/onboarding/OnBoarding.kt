@@ -13,6 +13,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
@@ -69,6 +71,7 @@ class OnBoarding : ComponentActivity() {
 fun OnBoardingMain(done: () -> Unit) {
     var step by remember { mutableIntStateOf(0) }
     val scroll = rememberScrollState()
+    val focusManager = LocalFocusManager.current
 
     Column(
         Modifier
@@ -76,7 +79,10 @@ fun OnBoardingMain(done: () -> Unit) {
             .background(Brush.horizontalGradient(listOf(
                 MaterialTheme.colorScheme.primary,
                 MaterialTheme.colorScheme.secondary
-            ))),
+            )))
+            .clickable {
+                focusManager.clearFocus()
+            },
         verticalArrangement = Arrangement.Center
     ) {
         AnimatedContent(
@@ -93,9 +99,7 @@ fun OnBoardingMain(done: () -> Unit) {
             }
         ) {
             when (it) {
-                0 -> Disclaimer {
-                    step++
-                }
+                0 -> Disclaimer { step++ }
                 1 -> WelcomeScreen { step++ }
                 2 -> InitalSetup { step++ }
                 3 -> TimedSettingsSetup { step++ }

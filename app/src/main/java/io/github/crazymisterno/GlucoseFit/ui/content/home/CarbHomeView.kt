@@ -1,6 +1,7 @@
 package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,12 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zedalpha.shadowgadgets.compose.clippedShadow
 import io.github.crazymisterno.GlucoseFit.data.storage.MealWithFood
 import java.time.LocalDate
-import java.time.format.TextStyle
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CarbHomeRoot(
@@ -38,6 +37,7 @@ fun CarbHomeRoot(
             carbs += food.carbs
         }
     }
+    val formatter = DateTimeFormatter.ofPattern("MMM d, uuuu")
 
     Column(modifier = Modifier
         .background(Brush.horizontalGradient(listOf(
@@ -60,11 +60,8 @@ fun CarbHomeRoot(
                 .padding(15.dp)
         ) {
             Text(
-                date.month.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.US) + " " +
-                        date.dayOfMonth + ", " +
-                        date.year,
-                fontSize = 24.sp,
-                fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+                date.format(formatter),
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.fillMaxWidth()
@@ -86,13 +83,13 @@ fun CarbHomeRoot(
         }
         Spacer(Modifier.height(15.dp))
         LazyColumn(
-            Modifier.fillMaxHeight()
+            Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             items(mealList, key = {meal -> meal.meal.id}) { meal ->
                 MealSection(meal) {
                     navigate(meal.meal.id)
                 }
-                Spacer(Modifier.height(15.dp))
             }
         }
     }
