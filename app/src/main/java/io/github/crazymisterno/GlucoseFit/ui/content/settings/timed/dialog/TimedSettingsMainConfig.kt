@@ -55,7 +55,8 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
+                .padding(15.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Text(
@@ -113,7 +114,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                     "Save",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 15.dp)
+                    modifier = Modifier.padding(5.dp)
                 )
             }
             Button(
@@ -133,7 +134,7 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                     "Cancel",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 15.dp)
+                    modifier = Modifier.padding(5.dp)
                 )
             }
             if (errorAlert)

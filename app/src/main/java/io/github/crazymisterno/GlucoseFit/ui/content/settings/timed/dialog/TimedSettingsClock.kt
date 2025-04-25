@@ -72,9 +72,10 @@ fun TimedSettingsClock(setting: TimedSettings, action: (Int, LocalTime) -> Unit)
                     "Save",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 15.dp)
+                    modifier = Modifier.padding(5.dp)
                 )
             }
+            Spacer(Modifier.height(15.dp))
             Button(
                 onClick = { action(1, LocalTime.of(value.hour, value.minute)) },
                 colors = buttonColors(),
@@ -85,7 +86,7 @@ fun TimedSettingsClock(setting: TimedSettings, action: (Int, LocalTime) -> Unit)
                     "Cancel",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 15.dp)
+                    modifier = Modifier.padding(5.dp)
                 )
             }
         }

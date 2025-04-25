@@ -70,7 +70,7 @@ fun CalendarMain(navigate: (Int, Int, Int) -> Unit) {
             },
             colors = buttonColors(),
             shape = RoundedCornerShape(15.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(15.dp)
         ) {
             Text(
                 "View Details",
