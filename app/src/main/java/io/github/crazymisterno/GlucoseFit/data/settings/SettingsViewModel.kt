@@ -25,7 +25,10 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             provider.shared
                 .map { it.manualCalories }
-                .collect { manualCaloriesValue = TextFieldValue(it) }
+                .collect {
+                    if (it != null)
+                        manualCaloriesValue = TextFieldValue(it)
+                }
         }
     }
 
