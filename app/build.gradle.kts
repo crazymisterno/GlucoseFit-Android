@@ -6,11 +6,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp") version "2.1.10-1.0.31"
-    id("androidx.room") version "2.7.0"
-    id("com.google.protobuf") version "0.9.4"
-    kotlin("plugin.serialization") version "2.0.21"
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
+    alias(libs.plugins.protobuf)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt)
 }
 
 protobuf {
