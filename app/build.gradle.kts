@@ -90,6 +90,9 @@ android {
             ndk {
                 debugSymbolLevel = "FULL"
             }
+            packaging {
+                jniLibs.keepDebugSymbols.add("**/*.so")
+            }
         }
     }
     compileOptions {
