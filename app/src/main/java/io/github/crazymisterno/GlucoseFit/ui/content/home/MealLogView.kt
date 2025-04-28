@@ -2,29 +2,20 @@ package io.github.crazymisterno.GlucoseFit.ui.content.home
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -156,37 +147,29 @@ fun FoodList(list: List<FoodItem>, db: DataViewModel = hiltViewModel()) {
                     .clip(RoundedCornerShape(15.dp))
             ) {
                 itemsIndexed(list) { index, item ->
-                    ListItem(
-                        headlineContent = { Text(item.name) },
-                        supportingContent = { Text("${item.carbs}g carbs, ${item.calories} cal") },
-                        trailingContent = {
-                            Row {
-                                Icon(
-                                    Icons.Filled.Delete,
-                                    "Delete item",
-                                    tint = Color.Red,
-                                    modifier = Modifier
-                                        .clickable {
-                                            db.deleteFood(item)
-                                            Toast
-                                                .makeText(context, "Food deleted", Toast.LENGTH_SHORT)
-                                                .show()
-                                        }
-                                )
-                                Spacer(Modifier.width(5.dp))
-                                Icon(
-                                    Icons.Filled.AddCircle,
-                                    "Save item",
-                                    tint = Color.Green,
-                                    modifier = Modifier
-                                        .clickable {
-                                            db.saveFood(item)
-                                            Toast
-                                                .makeText(context, "Food saved", Toast.LENGTH_SHORT)
-                                                .show()
-                                        }
-                                )
-                            }
+                    item.Display(
+                        modifier = Modifier
+                            .clip(
+                                if (index == 0 && list.size == 1)
+                                    RoundedCornerShape(15.dp)
+                                else if (index == 0)
+                                    RoundedCornerShape(topEnd = 15.dp, topStart = 15.dp)
+                                else if (index == list.size - 1)
+                                    RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
+                                else
+                                    RoundedCornerShape(0.dp)
+                            ),
+                        {
+                            db.deleteFood(item)
+                            Toast
+                                .makeText(context, "Food deleted", Toast.LENGTH_SHORT)
+                                .show()
+                        },
+                        {
+                            db.saveFood(item)
+                            Toast
+                                .makeText(context, "Food saved", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     )
                     if (index < list.size - 1)

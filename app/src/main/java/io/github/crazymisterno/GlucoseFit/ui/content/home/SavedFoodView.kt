@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -30,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ListItem
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -104,39 +102,28 @@ fun SavedFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), dialog: (Sav
                     .fillMaxHeight(0.8f)
             ) {
                 itemsIndexed(loadList) { index, item ->
-                    ListItem(
-                        headlineContent = { Text(item.name) },
-                        supportingContent = { Text("${item.carbs}g carbs, ${item.calories} Calories")},
-                        modifier = Modifier
-                            .clip(
-                                if (index == 0 && index == loadList.size - 1)
-                                    RoundedCornerShape(15.dp)
-                                else if (index == 0)
+                    item.Display(Modifier
+                        .clip(
+                            if (index == 0 && loadList.size == 1)
+                                RoundedCornerShape(15.dp)
+                            else if (index == 0)
                                 RoundedCornerShape(topEnd = 15.dp, topStart = 15.dp)
-                                else if (index == loadList.size - 1)
+                            else if (index == loadList.size - 1)
                                 RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                                else
+                            else
                                 RoundedCornerShape(0.dp)
-                            )
-                            .combinedClickable(
-                            onClick = {
-                                val imported = FoodItem(
-                                    mealId = mealId,
-                                    name = item.name,
-                                    carbs = item.carbs,
-                                    calories = item.calories
-                                )
-                                db.addFood(imported)
-                                Toast
-                                    .makeText(context, "Food imported", Toast.LENGTH_SHORT)
-                                    .show()
-                                close()
-                            },
-                            onLongClick = {
-                                dialog(item)
-                            }
                         ),
-                    )
+                        {
+                            val imported = FoodItem(item, mealId)
+                            db.addFood(imported)
+                            Toast
+                                .makeText(context, "Food imported", Toast.LENGTH_SHORT)
+                                .show()
+                            close()
+                        }
+                    ) {
+                        dialog(item)
+                    }
                     if (index < loadList.size - 1)
                         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
                 }

@@ -112,10 +112,10 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     }
                     else {
                         val food = FoodItem(
-                            mealId = mealId,
-                            name = nameField.text,
-                            carbs = carbField.text.toDoubleOrNull() ?: 0.0,
-                            calories = calField.text.toDoubleOrNull() ?: 0.0
+                            mealId,
+                            nameField.text,
+                            carbField.text.toDoubleOrNull() ?: 0.0,
+                            calField.text.toDoubleOrNull() ?: 0.0
                         )
                         db.addFood(food)
                         close()
@@ -146,10 +146,10 @@ fun AddFoodView(mealId: Int, db: DataViewModel = hiltViewModel(), close: () -> U
                     }
                     else {
                         val food = FoodItem(
-                            mealId = mealId,
-                            name = nameField.text,
-                            carbs = carbField.text.toDoubleOrNull() ?: 0.0,
-                            calories = calField.text.toDoubleOrNull() ?: 0.0
+                            mealId,
+                            nameField.text,
+                            carbField.text.toDoubleOrNull() ?: 0.0,
+                            calField.text.toDoubleOrNull() ?: 0.0
                         )
                         db.addFood(food)
                         db.saveFood(food)

@@ -95,12 +95,7 @@ class DataViewModel @Inject constructor(
 
     fun importFood(food: SavedFoodItem, mealId: Int) {
         viewModelScope.launch {
-            val toImport = FoodItem(
-                mealId = mealId,
-                name = food.name,
-                carbs = food.carbs,
-                calories = food.calories
-            )
+            val toImport = FoodItem(food, mealId)
             database.mealAccess().insertFood(toImport)
         }
     }
@@ -110,7 +105,7 @@ class DataViewModel @Inject constructor(
             .stateIn(
                 viewModelScope,
                 SharingStarted.Eagerly,
-                SavedFoodItem(name = "", calories = 0.0, carbs = 0.0)
+                SavedFoodItem("", 0.0, 0.0)
             )
     }
 
@@ -121,11 +116,7 @@ class DataViewModel @Inject constructor(
     }
 
     fun saveFood(item: FoodItem) {
-        val savedItem = SavedFoodItem(
-            name = item.name,
-            carbs = item.carbs,
-            calories = item.calories
-        )
+        val savedItem = SavedFoodItem(item)
         viewModelScope.launch {
             database.savedFoodAccess().insert(savedItem)
         }
@@ -138,11 +129,7 @@ class DataViewModel @Inject constructor(
     }
 
     fun deleteSavedFood(item: FoodItem) {
-        val savedItem = SavedFoodItem(
-            name = item.name,
-            carbs = item.carbs,
-            calories = item.calories
-        )
+        val savedItem = SavedFoodItem(item)
         viewModelScope.launch {
             database.savedFoodAccess().delete(savedItem)
         }
@@ -227,7 +214,13 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    fun logDose(units: Double, date: LocalDate, time: LocalTime = LocalTime.now()) {
+    fun logDose(units: Double, date: LocalDate) {
+        viewModelScope.launch {
+            database.doseLogAccess().newEntry(DoseLogEntry(date, units))
+        }
+    }
+
+    fun logDose(units: Double, date: LocalDate, time: LocalTime) {
         viewModelScope.launch {
             database.doseLogAccess().newEntry(DoseLogEntry(
                 date,
