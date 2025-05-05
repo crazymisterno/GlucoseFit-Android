@@ -45,7 +45,7 @@ interface TimedSettingsAccess {
         ORDER BY startTime DESC
         LIMIT 1
     """)
-    fun getCurrentSetting(): Flow<TimedSettings>
+    fun getCurrentSetting(): Flow<TimedSettings?>
 
     @Query("""
         SELECT * FROM timedSettings

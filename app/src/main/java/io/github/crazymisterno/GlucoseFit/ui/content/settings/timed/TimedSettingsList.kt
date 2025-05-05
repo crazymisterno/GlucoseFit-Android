@@ -17,9 +17,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
 import io.github.crazymisterno.GlucoseFit.ui.theme.buttonColors
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,12 +37,7 @@ import java.time.LocalTime
 fun TimedSettingsList(db: DataViewModel = hiltViewModel(), select: (Int, Boolean) -> Unit) {
     val allSettings by db.getAllTimeSettings().collectAsState()
     val currentSetting by db.getTimeSetting().collectAsState()
-    val latestId by db.latestId.collectAsState()
-    LaunchedEffect(latestId) {
-        latestId?.let { id ->
-            select(id.toInt(), true)
-        }
-    }
+    val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,13 +63,16 @@ fun TimedSettingsList(db: DataViewModel = hiltViewModel(), select: (Int, Boolean
         }
         Button(
             onClick = {
-                val setting = TimedSettings(
-                    LocalTime.now(),
-                    "",
-                    "",
-                    ""
-                )
-                db.addTimeSetting(setting)
+                scope.launch {
+                    val setting = TimedSettings(
+                        LocalTime.now(),
+                        "",
+                        "",
+                        ""
+                    )
+                    val id = db.addSettingAsync(setting)
+                    select(id.toInt(), true)
+                }
             },
             colors = buttonColors(),
             shape = RoundedCornerShape(15.dp),

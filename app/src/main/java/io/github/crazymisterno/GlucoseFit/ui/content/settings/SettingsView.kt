@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -111,6 +112,7 @@ fun SettingsView(viewModel: SettingsViewModel = hiltViewModel(), select: (Int, B
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
+                Spacer(Modifier.height(20.dp))
                 TextField(
                     value = viewModel.manualCaloriesValue,
                     onValueChange = { newVal ->

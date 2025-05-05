@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.crazymisterno.GlucoseFit.data.settings.TimedSettings
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -144,12 +143,14 @@ class DataViewModel @Inject constructor(
             )
     }
 
-    var latestId = MutableStateFlow<Long?>(null)
-
     fun addTimeSetting(setting: TimedSettings) {
         viewModelScope.launch {
-            latestId.value = database.timedSettingAccess().addNew(setting)
+            database.timedSettingAccess().addNew(setting)
         }
+    }
+
+    suspend fun addSettingAsync(settings: TimedSettings): Long {
+        return database.timedSettingAccess().addNew(settings)
     }
 
     fun removeTimeSetting(setting: TimedSettings) {
