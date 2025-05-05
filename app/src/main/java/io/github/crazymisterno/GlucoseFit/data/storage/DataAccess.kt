@@ -12,9 +12,6 @@ import java.time.LocalDate
 @Dao
 interface MealAccess {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertMeal(meal: MealLogEntry): Long
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAllMeals(vararg meals: MealLogEntry): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -22,10 +19,6 @@ interface MealAccess {
 
     @Delete
     suspend fun deleteFood(food: FoodItem)
-
-    @Transaction
-    @Query("SELECT * FROM meals WHERE date > :minDate")
-    fun getSinceDate(minDate: LocalDate): Flow<List<MealWithFood>>
 
     @Transaction
     @Query("SELECT * FROM meals WHERE date = :date")
@@ -38,10 +31,6 @@ interface MealAccess {
     @Transaction
     @Query("SELECT * FROM meals WHERE id = :id LIMIT 1")
     fun getById(id: Int): Flow<MealWithFood>
-
-    @Transaction
-    @Query("SELECT * FROM food WHERE mealId = :mealId AND name LIKE '%' || :query || '%'")
-    fun searchFood(mealId: Int, query: String): Flow<List<FoodItem>>
 }
 
 @Dao
@@ -70,12 +59,6 @@ interface DoseLogAccess {
     @Delete
     suspend fun removeEntry(entry: DoseLogEntry)
 
-    @Query("SELECT * FROM doseLog")
-    fun getAll(): Flow<List<DoseLogEntry>>
-
     @Query("SELECT * FROM doseLog WHERE date = :date")
     fun getByDate(date: LocalDate): Flow<List<DoseLogEntry>>
-
-    @Query("SELECT * FROM doseLog WHERE id = :id")
-    fun getById(id: Int): Flow<DoseLogEntry>
 }

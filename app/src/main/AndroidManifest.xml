@@ -28,7 +28,7 @@
             android:exported="false"
             android:theme="@style/Theme.GlucoseFit"/>
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".ui.StartupActivity"
             android:exported="true"
             android:theme="@style/Theme.GlucoseFit.Startup">
             <intent-filter>

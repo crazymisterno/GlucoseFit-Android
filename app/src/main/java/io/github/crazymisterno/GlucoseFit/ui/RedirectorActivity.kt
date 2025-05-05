@@ -57,7 +57,7 @@ class RedirectorActivity : ComponentActivity() {
     }
 }
 
-class SplashActivity : ComponentActivity() {
+class StartupActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startActivity(Intent(this, RedirectorActivity::class.java))

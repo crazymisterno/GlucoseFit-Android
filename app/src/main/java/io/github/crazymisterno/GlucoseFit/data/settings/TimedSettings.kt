@@ -40,14 +40,6 @@ interface TimedSettingsAccess {
     suspend fun checkOnce(): List<TimedSettings>
 
     @Query("""
-        SELECT * FROM timedSettings 
-        WHERE startTime <= current_time
-        ORDER BY startTime DESC
-        LIMIT 1
-    """)
-    fun getCurrentSetting(): Flow<TimedSettings?>
-
-    @Query("""
         SELECT * FROM timedSettings
         WHERE startTime <= :time
         ORDER BY startTime DESC
@@ -61,14 +53,6 @@ interface TimedSettingsAccess {
         LIMIT 1
     """)
     suspend fun getLastSetting(): TimedSettings?
-
-    fun findActive(time: LocalTime): Flow<TimedSettings?> {
-        return flow {
-            val firstQuery = getByTime(time)
-            emit(firstQuery ?: getLastSetting())
-            delay(1000)
-        }
-    }
 
     fun findActive(): Flow<TimedSettings?> {
         return flow {

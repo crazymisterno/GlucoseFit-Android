@@ -117,7 +117,7 @@ data class SavedFoodItem(
 }
 
 @Entity(tableName = "doseLog")
-data class DoseLogEntry constructor(
+data class DoseLogEntry(
     val date: LocalDate,
     val time: LocalTime,
     val dose: Double,

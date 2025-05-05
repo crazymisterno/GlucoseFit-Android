@@ -34,7 +34,7 @@ import io.github.crazymisterno.GlucoseFit.ui.theme.switchColors
 import io.github.crazymisterno.GlucoseFit.ui.theme.textFieldColors
 
 @Composable
-fun InitalSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Unit) {
+fun InitialSetup(settings: SettingsViewModel = hiltViewModel(), moveOn: () -> Unit) {
     val settingsState by settings.settings.collectAsState()
     val interaction = remember { MutableInteractionSource() }
     var errorAlert by remember { mutableStateOf(false) }

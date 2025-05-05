@@ -40,7 +40,7 @@ import io.github.crazymisterno.GlucoseFit.ui.content.MainActivity
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.Disclaimer
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.Finish
-import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.InitalSetup
+import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.InitialSetup
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.TimedSettingsSetup
 import io.github.crazymisterno.GlucoseFit.ui.onboarding.steps.WelcomeScreen
 import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
@@ -101,7 +101,7 @@ fun OnBoardingMain(done: () -> Unit) {
             when (it) {
                 0 -> Disclaimer { step++ }
                 1 -> WelcomeScreen { step++ }
-                2 -> InitalSetup { step++ }
+                2 -> InitialSetup { step++ }
                 3 -> TimedSettingsSetup { step++ }
                 4 -> Finish { done() }
             }

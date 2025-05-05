@@ -13,8 +13,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject
@@ -47,18 +45,16 @@ object SettingsDI {
             serializer = SettingsSerializer,
             produceFile = { context.dataStoreFile("settings.pb") }
         )
-        return SettingsDataProvider(store)
+        return SettingsProvider(store)
     }
 }
 
-class SettingsDataProvider @Inject constructor(
+class SettingsProvider @Inject constructor(
     private val dataStore: DataStore<Settings>
-) : SettingsProvider {
-    override val shared: Flow<Settings> = dataStore.data.map { preferences ->
-        preferences
-    }
+) {
+    val shared = dataStore.data
 
-    override suspend fun updateSettings(
+    suspend fun updateSettings(
         manualCalories: String?,
         carbOnly: Boolean?,
         setupComplete: Boolean?
@@ -74,14 +70,4 @@ class SettingsDataProvider @Inject constructor(
             builder.build()
         }
     }
-}
-
-interface SettingsProvider {
-    val shared: Flow<Settings>
-
-    suspend fun updateSettings(
-        manualCalories: String? = null,
-        carbOnly: Boolean? = null,
-        setupComplete: Boolean? = null
-    )
 }

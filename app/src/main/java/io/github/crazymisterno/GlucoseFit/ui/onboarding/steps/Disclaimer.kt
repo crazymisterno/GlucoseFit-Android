@@ -20,11 +20,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.crazymisterno.GlucoseFit.ui.theme.DarkBgGreen
-import io.github.crazymisterno.GlucoseFit.ui.theme.GlucoseFitMaterialTheme
 import io.github.crazymisterno.GlucoseFit.ui.theme.LightBgBlue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -79,13 +77,5 @@ fun Disclaimer(moveOn: () -> Unit) {
             ) {
                 Text("I Understand and Agree")
             }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewDisclaimer() {
-    GlucoseFitMaterialTheme {
-        Disclaimer { }
     }
 }

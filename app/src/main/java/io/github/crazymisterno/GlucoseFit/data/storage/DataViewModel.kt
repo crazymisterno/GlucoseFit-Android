@@ -16,15 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
-    @InStorageDb
     private val database: DataManager
 ): ViewModel() {
-    val mealsForToday: StateFlow<List<MealWithFood>> =
-        database.mealAccess()
-            .getByDate(LocalDate.now())
-            .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
-
-
     val savedFood: StateFlow<List<SavedFoodItem>> = database.savedFoodAccess().getAll()
         .stateIn(
             viewModelScope,
@@ -69,15 +62,6 @@ class DataViewModel @Inject constructor(
                 SharingStarted.WhileSubscribed(5000),
                 MealWithFood(MealLogEntry(name = "", date = LocalDate.now()), listOf())
             )
-    }
-
-    fun insertMeals(vararg meals: MealWithFood) {
-        viewModelScope.launch {
-            meals.forEach { meal ->
-                database.mealAccess().insertMeal(meal.meal)
-                database.mealAccess().insertFood(*meal.food.toTypedArray())
-            }
-        }
     }
 
     fun insertBlankMeals(vararg meals: MealLogEntry) {
@@ -127,13 +111,6 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    fun deleteSavedFood(item: FoodItem) {
-        val savedItem = SavedFoodItem(item)
-        viewModelScope.launch {
-            database.savedFoodAccess().delete(savedItem)
-        }
-    }
-
     fun searchSavedItems(query: String): StateFlow<List<SavedFoodItem>> {
         return database.savedFoodAccess().search(query)
             .stateIn(
@@ -141,12 +118,6 @@ class DataViewModel @Inject constructor(
                 SharingStarted.Eagerly,
                 listOf()
             )
-    }
-
-    fun addTimeSetting(setting: TimedSettings) {
-        viewModelScope.launch {
-            database.timedSettingAccess().addNew(setting)
-        }
     }
 
     suspend fun addSettingAsync(settings: TimedSettings): Long {
@@ -185,19 +156,8 @@ class DataViewModel @Inject constructor(
             )
     }
 
-    fun getTimeSetting(time: LocalTime): StateFlow<TimedSettings?> {
-        Log.println(Log.INFO, "Message", "Rerunning query")
-        return database.timedSettingAccess().findActive(time)
-            .distinctUntilChanged()
-            .stateIn(
-                viewModelScope,
-                SharingStarted.Eagerly,
-                TimedSettings(LocalTime.now(), "", "", "")
-            )
-    }
-
     fun getAllTimeSettings(): StateFlow<List<TimedSettings>> {
-        return  database.timedSettingAccess().getAll()
+        return database.timedSettingAccess().getAll()
             .stateIn(
                 viewModelScope,
                 SharingStarted.Eagerly,
@@ -243,15 +203,6 @@ class DataViewModel @Inject constructor(
                 viewModelScope,
                 SharingStarted.Eagerly,
                 listOf()
-            )
-    }
-
-    fun idDoseLog(id: Int): StateFlow<DoseLogEntry> {
-        return database.doseLogAccess().getById(id)
-            .stateIn(
-                viewModelScope,
-                SharingStarted.Eagerly,
-                DoseLogEntry(LocalDate.now(), LocalTime.now(), 0.0)
             )
     }
 }

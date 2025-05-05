@@ -27,8 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,7 +40,6 @@ import com.zedalpha.shadowgadgets.compose.clippedShadow
 import io.github.crazymisterno.GlucoseFit.data.storage.DataViewModel
 import io.github.crazymisterno.GlucoseFit.data.storage.MealWithFood
 import io.github.crazymisterno.GlucoseFit.data.settings.SettingsViewModel
-import io.github.crazymisterno.GlucoseFit.dev.PreviewDate
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -68,10 +65,9 @@ data class SavedOptions(
     val mealId: Int
 )
 
-@Preview
 @Composable
 fun HomeView(
-    @PreviewParameter(PreviewDate::class) date: LocalDate,
+    date: LocalDate,
     db: DataViewModel = hiltViewModel(),
     settings: SettingsViewModel = hiltViewModel()
 ) {

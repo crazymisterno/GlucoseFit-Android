@@ -14,14 +14,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import io.github.crazymisterno.GlucoseFit.ui.content.calendar.CalendarNavigator
 import io.github.crazymisterno.GlucoseFit.ui.content.home.HomeView
 import io.github.crazymisterno.GlucoseFit.ui.content.settings.SettingsNavigator
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@Preview
 @Composable
 fun ContentView() {
     val tabNames = listOf("Settings", "Home", "Dose Log", "Calendar")
