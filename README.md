@@ -2,9 +2,9 @@
 GlucoseFit is your all-in-one diabetes companion, designed specifically for type 1 diabetics by type 1 diabetics. Easily log your meals, track your carb intake, and record your daily insulin doses—all in one simple, powerful app.
 
 Key Features:
-• Carb & Food Logging
-• Insulin Dose Tracking
-• Custom Dose Settings – Keep track of your insulin-to-carb ratios, correction factors, and other personalized settings.
+- Carb & Food Logging
+- Insulin Dose Tracking
+- Custom Dose Settings – Keep track of your insulin-to-carb ratios, correction factors, and other personalized settings.
 
 Whether you're newly diagnosed or a diabetes veteran, GlucoseFit helps simplify your routine and give you more control.
 
