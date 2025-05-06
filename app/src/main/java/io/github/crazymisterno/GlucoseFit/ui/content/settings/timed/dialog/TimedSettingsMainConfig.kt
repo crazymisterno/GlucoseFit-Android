@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -75,7 +77,8 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                     colors = textFieldColors(),
                     modifier = Modifier.fillMaxWidth(),
                     prefix = { Text("1:") },
-                    isError = ratioValue.text.toDoubleOrNull() == null && ratioValue.text.isNotEmpty()
+                    isError = ratioValue.text.toDoubleOrNull() == null && ratioValue.text.isNotEmpty(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 TextField(
                     value = correctionValue,
@@ -84,7 +87,8 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                     colors = textFieldColors(),
                     modifier = Modifier.fillMaxWidth(),
                     prefix = { Text("1:") },
-                    isError = correctionValue.text.toDoubleOrNull() == null && correctionValue.text.isNotEmpty()
+                    isError = correctionValue.text.toDoubleOrNull() == null && correctionValue.text.isNotEmpty(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 TextField(
                     value = targetValue,
@@ -93,7 +97,8 @@ fun TimedSettingsMainConfig(setting: TimedSettings, action: (String, String, Str
                     colors = textFieldColors(),
                     modifier = Modifier.fillMaxWidth(),
                     suffix = { Text("mg/dL") },
-                    isError = targetValue.text.toDoubleOrNull() == null && targetValue.text.isNotEmpty()
+                    isError = targetValue.text.toDoubleOrNull() == null && targetValue.text.isNotEmpty(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
             Button(
