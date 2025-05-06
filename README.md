@@ -22,6 +22,8 @@ appears, select "settings"
 6. Check the switch "Allow from this source"
    - Always be sure that the apps you install are safe before installing them.
 7. You should receive a prompt asking if you want to install GlucoseFit. Select "Install"
+   - Play protect should not have any problems with needing to scan the app for malware as we have already
+done that. However, if play protect shows up, select "scan", wait for scanning to complete, and then select "install"
    - If you do not see the prompt, open your browser and repeat steps 3 and 4
 
 At this point, GlucoseFit is now installed on your device and ready to use.
